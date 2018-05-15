@@ -24,7 +24,6 @@ import 'react-chat-widget/lib/styles.css';
 import './rachat.css';
 import config from 'guiConfig';
 
-
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -115,6 +114,9 @@ class Main extends React.Component {
           <BeamlineCamera cameras={config.beamlineCameras} /> : null
           }
         </span>
+        { config.beamlineCameras ?
+        <BeamlineCamera cameras={config.beamlineCameras} /> : null
+        }
       </div>
     );
   }
