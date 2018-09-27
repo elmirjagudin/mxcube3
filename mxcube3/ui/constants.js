@@ -41,6 +41,10 @@ export function hasLimsData(sample) {
   return sample.limsID !== undefined;
 }
 
+export function taskHasLimsData(task) {
+  return task.limsResultData && (task.limsResultData.dataCollectionId || task.limsResultData.dataCollectionGroupId);
+}
+
 export function twoStateActuatorIsActive(state) {
   return ['in', 'on', 'enabled'].includes(String(state).toLowerCase());
 }

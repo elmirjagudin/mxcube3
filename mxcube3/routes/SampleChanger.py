@@ -117,9 +117,9 @@ def mount_sample(loc):
         mxcube.sample_changer.load(loc)
         set_current_sample(loc)
     except Exception as ex:
-	return 'Cannot load sample', 409, {'Content-Type': 'application/json',
-					   'message': str(ex)	
-					}
+        return 'Cannot load sample', 409, {'Content-Type': 'application/json',
+                       'message': str(ex)   
+                    }
 
     return jsonify(get_sc_contents())
 
@@ -130,9 +130,9 @@ def unmount_sample(loc):
         mxcube.sample_changer.unload(loc, wait=True)
         set_current_sample(None)
     except Exception as ex:
-	    return 'Cannot load sample', 409, {'Content-Type': 'application/json',
-					   'message': str(ex)	
-					}
+        return 'Cannot load sample', 409, {'Content-Type': 'application/json',
+                                               'message': str(ex)
+                                          }
     return jsonify(get_sc_contents())
 
 @mxcube.route("/mxcube/api/v0.1/sample_changer/unmount_current/", methods=['GET'])
@@ -143,21 +143,26 @@ def unmount_current():
         set_current_sample(None)
     except Exception as ex:
         return 'Cannot unload sample', 409, {'Content-Type': 'application/json',
-					   'message': str(ex)	
-					}
+                                             'message': str(ex)
+                                            }
     return jsonify(get_sc_contents())
 
 @mxcube.route("/mxcube/api/v0.1/sample_changer/mount", methods=["POST"])
 @mxcube.restrict
 def mount_sample_clean_up():
+    resp = Response(status=200)
+
     try:
-        scutils.mount_sample_clean_up(request.get_json())
+        res = scutils.mount_sample_clean_up(request.get_json())
     except Exception as ex:
-        return 'Cannot load sample', 409, {'Content-Type': 'application/json',
-					   'message': str(ex)	
-					}
+        resp = ('Cannot load sample', 409,
+                {'Content-Type': 'application/json', 'message': str(ex)})
     else:
-        return Response(status=200)
+        if not res:
+            resp = ('No sample loaded', 409,
+                    {'Content-Type': 'application/json',
+                     'message': 'Could not mount sample: No sample on given position or empty vial ?'})
+    return resp
 
 @mxcube.route("/mxcube/api/v0.1/sample_changer/unmount", methods=['POST'])
 @mxcube.restrict
@@ -166,10 +171,8 @@ def unmount_sample_clean_up():
         scutils.unmount_sample_clean_up(request.get_json())
     except Exception as ex:
         return 'Cannot unload sample', 409, {'Content-Type': 'application/json',
-					   'message': str(ex)	
-					}
-    else:
-        return Response(status=200)
+                                             'message': str(ex) }
+    return Response(status=200)
 
 @mxcube.route("/mxcube/api/v0.1/sample_changer/get_maintenance_cmds", methods=['GET'])
 @mxcube.restrict
