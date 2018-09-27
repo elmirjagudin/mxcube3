@@ -12,6 +12,7 @@ from .scutils import set_current_sample
 def init_signals():
     """Initialize hwobj signals."""
     mxcube.sample_changer.connect('stateChanged', signals.sc_state_changed)
+    mxcube.sample_changer.connect('pathSafeChanged', signals.path_safe_changed)
     mxcube.sample_changer.connect('loadedSampleChanged', signals.loaded_sample_changed)
     mxcube.sample_changer.connect('contentsUpdated', signals.sc_contents_update)
 

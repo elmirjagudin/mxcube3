@@ -144,6 +144,16 @@ def sc_state_changed(*args):
 
     socketio.emit('sc_state', state_str, namespace='/hwr')
 
+def path_safe_changed(*args):
+    # responds to the 'pathSafeChanged' signal in cats like SC
+    new_state = args[0]
+    #we are only interested when it becames true
+    if new_state:
+        msg = {'signal': 'inSafeArea',
+               'message': 'Sample moved to safe area'
+               }
+        socketio.emit('sc', msg, namespace='/hwr')
+
 def loaded_sample_changed(sample):
     # If sample is a "No sample loaded value" None or ''
     if sample in [None, '']:
