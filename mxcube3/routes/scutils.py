@@ -205,7 +205,7 @@ def mount_sample_clean_up(sample):
     try:
         msg = '[SC] mounting %s (%r)' % (sample['location'], sample['sampleID'])
         logging.getLogger('HWR').info(msg)
-
+	
         sid = get_current_sample().get("sampleID", False)
         current_queue = qutils.queue_to_dict()
 
@@ -213,9 +213,11 @@ def mount_sample_clean_up(sample):
 
         if sample['location'] != 'Manual':           
             if not mxcube.sample_changer.getLoadedSample():
-                res = mxcube.sample_changer.load(sample['sampleID'], wait=True)
+                mxcube.sample_changer.load(sample['sampleID'], wait=True)
+		res = True
             elif mxcube.sample_changer.getLoadedSample().getAddress() != sample['location']:
-                res = mxcube.sample_changer.load(sample['sampleID'], wait=True)
+                mxcube.sample_changer.load(sample['sampleID'], wait=True)
+		res = True
 
             if res and mxcube.CENTRING_METHOD == CENTRING_METHOD.LOOP:
                 logging.getLogger('HWR').info('Starting autoloop centring ...')

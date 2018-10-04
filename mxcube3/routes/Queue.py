@@ -68,15 +68,17 @@ def queue_stop():
             qe.stop()
         except Exception as ex:
             print str(ex)
+        try:
+	    logging.getLogger('user_level_log').info('Queue execution was aborted, ' + str(qe.get_data_model()))
 
-        logging.getLogger('user_level_log').info('Queue execution was aborted, ' + str(qe.get_data_model()))
-
-        mxcube.queue.queue_hwobj.set_pause(False)
-        # the next two is to avoid repeating the task
-        # TODO: if you now run the queue it will be enabled and run
-        qe.get_data_model().set_executed(True)
-        qe.get_data_model().set_enabled(False)
-        qe._execution_failed = True
+	    mxcube.queue.queue_hwobj.set_pause(False)
+	    # the next two is to avoid repeating the task
+		# TODO: if you now run the queue it will be enabled and run
+	    qe.get_data_model().set_executed(True)
+	    qe.get_data_model().set_enabled(False)
+	    qe._execution_failed = True
+        except Exception as ex:
+            print str(ex)
 
         mxcube.queue.queue_hwobj._is_stopped = True
         signals.queue_execution_stopped()

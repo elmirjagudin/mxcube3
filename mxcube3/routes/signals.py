@@ -152,6 +152,7 @@ def path_safe_changed(*args):
         msg = {'signal': 'inSafeArea',
                'message': 'Sample moved to safe area'
                }
+        logging.getLogger("HWR").info('emitting sc safe: ' + str(msg))
         socketio.emit('sc', msg, namespace='/hwr')
 
 def loaded_sample_changed(sample):
@@ -176,8 +177,6 @@ def loaded_sample_changed(sample):
             scutils.set_current_sample(None)
             address = ''
 
-        msg = {'signal': 'loadReady', 'location': address}
-        socketio.emit('sc', msg, namespace='/hwr')
         socketio.emit("loaded_sample_changed", {'address': address, 'barcode': barcode}, namespace="/hwr")
     except Exception, msg:
         logging.getLogger("HWR").error('error setting loaded sample: %s' + str(msg))
