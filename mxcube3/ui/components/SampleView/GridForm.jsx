@@ -34,6 +34,9 @@ export default class GridForm extends React.Component {
             {vdim} x {hdim}
           </td>
           <td>
+            {grid.numRows} x {grid.numCols}
+          </td>
+          <td>
             ({grid.numRows * grid.numCols})
           </td>
           <td>
@@ -144,6 +147,9 @@ export default class GridForm extends React.Component {
                   </th>
                   <th>
                     Dim (µm)
+                  </th>
+                  <th>
+                    Dim (cells)
                   </th>
                   <th>
                     #Cells
