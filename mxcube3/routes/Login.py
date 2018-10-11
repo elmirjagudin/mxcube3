@@ -195,6 +195,14 @@ def loginInfo():
     if user:
         if res["loginType"].lower() != 'user':
             res["selectedProposal"] = user["loginID"]
+        elif proposal_info:
+            print 'setting proposal_info ... ', proposal_info
+            code = proposal_info.get('Proposal').get('code')
+            number = proposal_info.get('Proposal').get('number')
+            proposalId = proposal_info.get('Proposal').get('proposalId')
+            res["selectedProposal"] = code + number
+            res["selectedProposalID"] = proposalId
+
     else:
         res["selectedProposal"] = {}
 

@@ -285,7 +285,7 @@ def select_proposal(proposal):
         mxcube.session.proposal_code = proposal_info.get('Proposal').get('code', '')
         mxcube.session.proposal_number = proposal_info.get('Proposal').get('number', '')
         mxcube.session.session_id = proposal_info.get('Session')[0].get('sessionId')
-
+        session['proposal'] = proposal_info
         if hasattr(mxcube.session, 'prepare_directories'):
             try:
                 logging.getLogger('HWR').info('[LIMS] Creating data directories for proposal %s'
