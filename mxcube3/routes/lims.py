@@ -147,7 +147,10 @@ def get_results():
 
         elif isinstance(model, qmo.Characterisation) or isinstance(model, qmo.Workflow):
             if result_file_test('characterisation-results.js'):
-                url_list =  data["limsResultData"]["workflow_result_url_list"]
+                try:
+                    url_list =  data["limsResultData"]["workflow_result_url_list"]
+                except:
+                    url_list = None
 
                 if url_list:
                     r = jsonify({"result": run_get_result_script(join(mxcube.template_folder, 'characterisation-results.js'), url_list[0])})
