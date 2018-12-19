@@ -340,8 +340,8 @@ def get_default_subdir(sample_data):
 
 
 def get_dc_link(col_id):
-    link = mxcube.rest_lims.dc_link(col_id)
-
+    #link = mxcube.rest_lims.dc_link(col_id)
+    link = None
     if not link:
         link = mxcube.db_connection.dc_link(col_id)
 
