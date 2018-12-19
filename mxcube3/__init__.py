@@ -187,7 +187,7 @@ def init_logging():
     log_formatter = logging.Formatter('%(asctime)s |%(name)-7s|%(levelname)-7s| %(message)s')
     log_file = cmdline_options.log_file
     if log_file:
-        log_file_handler = TimedRotatingFileHandler(log_file, when='midnight', backupCount=1)
+        log_file_handler = TimedRotatingFileHandler(log_file, when='midnight', backupCount=10)
         os.chmod(log_file, 0o666)
         log_file_handler.setFormatter(log_formatter)
 
