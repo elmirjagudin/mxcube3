@@ -88,7 +88,7 @@ def queue_stop():
 
 
 @mxcube.route("/mxcube/api/v0.1/queue/abort", methods=['PUT'])
-@mxcube.restrict
+#@mxcube.restrict
 def queue_abort():
     """
     Abort execution of the queue.
@@ -255,7 +255,7 @@ def queue_update_item(sqid, tqid):
     elif data["type"] == "Characterisation":
         qutils.set_char_params(model, entry, data, sample_model)
 
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
 
     resp = qutils.queue_to_json_response([model])
     resp.status_code = 200
@@ -268,7 +268,7 @@ def queue_update_item(sqid, tqid):
 def queue_delete_item():
     item_pos_list = request.get_json()
     qutils.delete_entry_at(item_pos_list)
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
     return Response(status=200)
 
 
@@ -281,7 +281,7 @@ def queue_enable_item():
     for qid in qidList:
         qutils.set_enabled_entry(qid, enabled)
 
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
     return Response(status=200)
 
 
@@ -289,14 +289,14 @@ def queue_enable_item():
 @mxcube.restrict
 def queue_swap_task_item(sid, ti1, ti2):
     qutils.swap_task_entry(sid, int(ti1), int(ti2))
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
     return Response(status=200)
 
 
 @mxcube.route("/mxcube/api/v0.1/queue/<sid>/<ti1>/<ti2>/move", methods=['POST'])
 def queue_move_task_item(sid, ti1, ti2):
     qutils.move_task_entry(sid, int(ti1), int(ti2))
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
     return Response(status=200)
 
 
@@ -306,7 +306,7 @@ def queue_set_sample_order():
     sample_order = request.get_json().get("sampleOrder", [])
     qutils.set_sample_order(sample_order)
     limsutils.sample_list_set_order(sample_order)
-    logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
+    #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
     return Response(status=200)
 
 

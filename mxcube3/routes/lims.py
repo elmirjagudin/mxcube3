@@ -120,8 +120,11 @@ def result_file_test(prefix):
 
 def apply_template(name, data):
     try:
+	data['limsResultData']['flux_end'] = 0
+	data['limsResultData']['resolutionAtCorner'] = 0
         r = jsonify({"result": render_template(name, data=data)})
-    except:
+    except Exception as ex:
+	print ex
         r = jsonify({"result": "No results yet, processing ..."})
 
     return r
@@ -150,8 +153,7 @@ def get_results():
                 try:
                     url_list =  data["limsResultData"]["workflow_result_url_list"]
                 except:
-                    url_list = None
-
+                   url_list = None
                 if url_list:
                     r = jsonify({"result": run_get_result_script(join(mxcube.template_folder, 'characterisation-results.js'), url_list[0])})
                 else:
