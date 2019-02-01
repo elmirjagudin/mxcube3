@@ -12,6 +12,7 @@ const validate = (values, props) => {
   const energies = props.attributes.resolution.limits.map(value => value[0]);
   const limitsMin = props.attributes.resolution.limits.map(value => value[1]);
   const limitsMax = props.attributes.resolution.limits.map(value => value[2]);
+  const phiMax = props.beamline.motors.phi.limits[1];
   // here we update the resolution limits based on the energy the typed in the form,
   // the limits come from a table sent by the client
 
@@ -80,6 +81,10 @@ const validate = (values, props) => {
     errors.num_images = 'Only 1 image allowed when characterizing from a 2D-point';
   }
 
+  if (values.osc_range * values.num_images > phiMax) {
+    errors.osc_range = 'Omega out of limits';
+    errors.num_images = 'Omega out of limits';
+  }
   return errors;
 };
 
