@@ -1,5 +1,6 @@
 const initialState = {
   loginInfo: {},
+  loginID: '',
   loggedIn: false,
   data: {},
   showProposalsForm: false,
@@ -19,6 +20,7 @@ export default (state = initialState, action) => {
         return Object.assign({}, state,
           {
             loginInfo: action.loginInfo,
+            loginID: action.loginInfo.loginID,
             selectedProposal: state.selectedProposal ?
               state.selectedProposal : action.loginInfo.selectedProposal,
             selectedProposalID: state.selectedProposalID ?
