@@ -1,6 +1,7 @@
 import datetime
 import socket
 import functools
+import ipaddress
 
 from collections import deque
 from flask import session, request, Response, jsonify
@@ -13,12 +14,19 @@ from mxcube3 import socketio
 PENDING_EVENTS = deque()
 DISCONNECT_HANDLED = True
 MESSAGES = []
+USER_TYPES = {True: 'local', False: 'remote'}
 
-
-def create_user(loginID, host, sid, lims_data=None):
-    return {"loginID": loginID, "host": host, "sid": sid, "name": "",
-            "operator": False, "requestsControl": False, "message": "",
-            "socketio_sid": None, "limsData": lims_data}
+def create_user(loginID, host, sid, local, lims_data=None):
+    return {"loginID": loginID,
+            "host": socket.gethostbyaddr(host)[0],
+            "sid": sid,
+            "type": USER_TYPES[local],
+            "name": "",
+            "operator": False,
+            "requestsControl": False,
+            "message": "",
+            "socketio_sid": None,
+            "limsData": lims_data}
 
 
 def add_user(user):
@@ -68,6 +76,11 @@ def get_operator():
 def is_operator(sid):
     user = get_operator()    
     return user and user["sid"] == sid
+
+
+def user_type(sid):
+    user = get_user_by_sid(sid)
+    return user.get('type')
 
 
 def logged_in_users(exclude_inhouse=False):
@@ -169,11 +182,15 @@ def remote_addr():
 
 
 def is_local_network(ip):
-    localhost = socket.gethostbyname_ex(socket.gethostname())[2][0]
-    localhost_range = '.'.join(localhost.split('.')[0:2])
-    private_address = '.'.join(ip.split('.')[0:2])
+    try:
+        _address = mxcube.session.remote_address
+    except:
+        _address = None
+    if ip == _address:
+        return False
+    _ip = ipaddress.ip_address(unicode(ip))
+    return _ip.is_private
 
-    return private_address == localhost_range
 
 def is_local_host():
     localhost_list = socket.gethostbyname_ex(socket.gethostname())[2]
