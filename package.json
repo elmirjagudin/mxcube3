@@ -2,7 +2,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "NODE_ENV=dev ./node_modules/.bin/webpack-dev-server --env.dev --config webpack.config.js",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack -p --config webpack.production.config.js && cp mxcube3/ui/index.html mxcube3/static/",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.production.config.js && cp mxcube3/ui/index.html mxcube3/static/",
     "esformatter": "./node_modules/.bin/esformatter",
     "lint": "eslint . --ext .js --ext .jsx"
   },
@@ -90,7 +90,7 @@
     "resolve-url-loader": "^2.0.0",
     "script-loader": "0.6.1",
     "style-loader": "^0.12.3",
-    "uglifyjs-webpack-plugin": "^0.4.6",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "^0.5.7",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.0"

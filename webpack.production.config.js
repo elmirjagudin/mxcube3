@@ -118,7 +118,15 @@ var config = {
     new CopyWebpackPlugin([
       { from: 'mxcube3/ui/img/favicon.ico' },
     ]),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        ecma: 8,
+        compress: {
+          warnings: false
+        }
+      }
+    })
   ],
   externals: {
     'guiConfig': JSON.stringify(require('./config.gui.prod.js')),
