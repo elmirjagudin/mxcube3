@@ -173,7 +173,9 @@ def strip_prefix(pt, prefix):
 
 
 def lims_existing_session(login_res):
-    return not login_res.get("Session", {}).get("new_session_flag", True)
+    # TODO
+    return True
+    # return not login_res.get("Session", {}).get("new_session_flag", True)
 
 def lims_is_inhouse(login_res):
     return login_res.get("Session", {}).get("is_inhouse", False)
