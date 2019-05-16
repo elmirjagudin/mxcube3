@@ -135,7 +135,7 @@ def unmount_sample(loc):
                                           }
     return jsonify(get_sc_contents())
 
-@mxcube.route("/mxcube/api/v0.1/sample_changer/unmount_current/", methods=['GET'])
+@mxcube.route("/mxcube/api/v0.1/sample_changer/unmount_current", methods=['GET'])
 @mxcube.restrict
 def unmount_current():
     try:
