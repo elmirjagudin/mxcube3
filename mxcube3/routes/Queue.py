@@ -205,8 +205,10 @@ def execute_entry_with_id(sid, tindex):
     """
     try:
         qutils.execute_entry_with_id(sid, tindex)
-    except:
-        return Response(status=409)
+    except Exception as ex:
+        resp = ('Cannot execute sample', 409,
+                {'Content-Type': 'application/json', 'message': str(ex)})
+        return resp
     else:
 #       logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
         return Response(status=200)

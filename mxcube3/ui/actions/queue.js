@@ -389,7 +389,7 @@ export function sendRunSample(sampleID, taskIndex) {
       }
     }).then((response) => {
       if (response.status >= 400) {
-        throw new Error('Server refused to run sample');
+        dispatch(showErrorPanel(true, response.headers.get('message')));
       } else {
         dispatch(runSample(sampleID));
       }

@@ -1632,8 +1632,9 @@ def execute_entry_with_id(sid, tindex=None):
 
             try:
                 scutils.mount_sample_clean_up(current_queue[sid])
-            except:
+            except RuntimeError as ex:
                 mxcube.queue.queue_hwobj.emit('queue_execution_failed', (None,))
+                raise RuntimeError('Queue execution failed, %s' %str(ex))
             else:
                 mxcube.queue.queue_hwobj.emit('queue_stopped', (None,))
         else:
@@ -1701,6 +1702,9 @@ def init_signals(queue):
 
     queue.queue_hwobj.connect("queue_stopped",
                               signals.queue_execution_finished)
+
+    queue.queue_hwobj.connect("queue_execution_failed",
+                              signals.queue_execution_failed)
 
     queue.queue_hwobj.connect("queue_paused",
                               signals.queue_execution_paused)
