@@ -47,6 +47,8 @@ class SampleViewContainer extends Component {
         phase={this.props.sampleViewState.currentPhase}
         phaseList={this.props.sampleViewState.phaseList}
         sendPhase={this.props.sampleViewActions.sendCurrentPhase}
+        loading={this.props.loading}
+        queueState={this.props.queueState}
       />
       </div>);
 
@@ -149,7 +151,8 @@ function mapStateToProps(state) {
     cellCounting: state.taskForm.defaultParameters.mesh.cell_counting,
     cellSpacing: state.taskForm.defaultParameters.mesh.cell_spacing,
     proposal: state.login.selectedProposal,
-    remoteAccess: state.remoteAccess
+    remoteAccess: state.remoteAccess,
+    loading: state.general.loading
   };
 }
 

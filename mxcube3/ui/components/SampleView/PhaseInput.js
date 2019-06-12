@@ -28,6 +28,7 @@ export default class PhaseInput extends React.Component {
           className={inputCSS}
           onChange={this.sendPhase}
           value={this.props.phase}
+          disabled={this.props.loading || this.props.queueState === 'QueueRunning'}
         >
         {this.props.phaseList.map((option) => (
           <option
