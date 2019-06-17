@@ -57,7 +57,7 @@ def take_control():
     # Already master do nothing
     if loginutils.is_operator(session.sid):
         return make_response("", 200)
-    
+
     login_id = session['loginInfo'].get('loginID')
 
     if login_id not in mxcube.session.in_house_users:
@@ -87,7 +87,7 @@ def toggle_operator(new_op_sid, message):
     new_op["message"] = message
 
     observers = loginutils.get_observers()
-
+    users = loginutils.get_users()
     # Append the new data path so that it can be updated on the client
     new_op["rootPath"] = mxcube.session.get_base_image_directory()
 
@@ -98,6 +98,8 @@ def toggle_operator(new_op_sid, message):
         socketio.emit("setObserver", current_op, room=current_op["socketio_sid"], namespace='/hwr')
 
     socketio.emit("observersChanged", observers, namespace='/hwr')
+    socketio.emit("usersChanged", users, namespace='/hwr')
+
     socketio.emit("setMaster", new_op, room=new_op["socketio_sid"], namespace='/hwr')
 
 
@@ -114,6 +116,7 @@ def observers():
     """
     """
     data = {'observers': loginutils.get_observers(),
+            'users': loginutils.get_users(),
             'sid': session.sid,
             'master': loginutils.is_operator(session.sid),
             'observerName': loginutils.get_observer_name(),
