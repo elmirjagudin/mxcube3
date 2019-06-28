@@ -111,12 +111,12 @@ class Main extends React.Component {
         </span>
         <span>
           { config.beamlineCameras ?
-          <BeamlineCamera cameras={config.beamlineCameras} /> : null
+          <BeamlineCamera
+            observers={this.props.remoteAccess.observers.length > 0}
+            cameras={config.beamlineCameras}
+          /> : null
           }
         </span>
-        { config.beamlineCameras ?
-        <BeamlineCamera cameras={config.beamlineCameras} /> : null
-        }
       </div>
     );
   }

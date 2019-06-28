@@ -53,15 +53,21 @@ class BeamlineCamera extends React.Component {
         </div>
       </Popover>
     );
+    let camstyle;
+    if (this.props.observers) {
+      camstyle = '0 100px 20px 0';
+    } else {
+      camstyle = '0 20px 20px 0';
+    }
 
     return (
-      <ButtonToolbar className="camera-container">
+      <ButtonToolbar className="camera-container" style={{ margin: camstyle }}>
         <OverlayTrigger ref="overlay" trigger="click" placement="top" overlay={popoverLeft}>
           <Button
-            className="button-circle"
+            className="button-circle text-center"
             bsStyle="success"
           >
-          <i className="fa fa-1x fa-video-camera" />
+          <i className="button-icon fa fa-2x fa-eye" />
           </Button>
         </OverlayTrigger>
       </ButtonToolbar>
@@ -71,6 +77,7 @@ class BeamlineCamera extends React.Component {
 
 BeamlineCamera.defaultProps = {
   cameras: {},
+  observers: false
 };
 
 function mapStateToProps(state) {

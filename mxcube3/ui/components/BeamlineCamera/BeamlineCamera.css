@@ -4,7 +4,6 @@
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
-  margin: 0 100px 20px 0;
   max-width: 370px;
   position: fixed;
   right: 0;
@@ -33,6 +32,9 @@
 .button-circle {
     width: 60px;
     height: 60px;
-    padding: 10px 16px;
     border-radius: 50%;
+}
+
+.button-icon {
+    margin-left: 0px;
 }
