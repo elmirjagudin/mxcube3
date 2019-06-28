@@ -504,6 +504,7 @@ class SampleGridViewContainer extends React.Component {
                           id="inQueue"
                           inline
                           checked={this.getFilterOptionValue('inQueue')}
+                          disabled={this.getFilterOptionValue('notInQueue')}
                           onChange={this.sampleGridFilter}
                         >
                           In Queue
@@ -513,6 +514,7 @@ class SampleGridViewContainer extends React.Component {
                         <Checkbox inline
                           id="notInQueue"
                           checked={this.getFilterOptionValue('notInQueue')}
+                          disabled={this.getFilterOptionValue('inQueue')}
                           onChange={this.sampleGridFilter}
                         >
                           Not in Queue
@@ -529,6 +531,7 @@ class SampleGridViewContainer extends React.Component {
                           inline
                           id="collected"
                           checked={this.getFilterOptionValue('collected')}
+                          disabled={this.getFilterOptionValue('notCollected')}
                           onChange={this.sampleGridFilter}
                         >
                           Collected
@@ -539,6 +542,7 @@ class SampleGridViewContainer extends React.Component {
                           inline
                           id="notCollected"
                           checked={this.getFilterOptionValue('notCollected')}
+                          disabled={this.getFilterOptionValue('collected')}
                           onChange={this.sampleGridFilter}
                         >
                           Not Collected
