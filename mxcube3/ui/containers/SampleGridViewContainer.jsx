@@ -545,18 +545,6 @@ class SampleGridViewContainer extends React.Component {
                         </Checkbox>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col xs={6}>
-                        <Checkbox
-                          inline
-                          id="limsSynched"
-                          checked={this.getFilterOptionValue('limsSynched')}
-                          onChange={this.sampleGridFilter}
-                        >
-                          Lims Synched
-                        </Checkbox>
-                      </Col>
-                    </Row>
                   </Col>
                 </Row>
                 <Row>
