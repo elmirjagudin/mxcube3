@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
-import { Modal, Button, Form, Row, Col, ButtonToolbar } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, ButtonToolbar, ControlLabel } from 'react-bootstrap';
 import { DraggableModal } from '../DraggableModal';
 import validate from './validate';
 import warn from './warning';
@@ -9,9 +9,12 @@ import warn from './warning';
 import { FieldsHeader,
          StaticField,
          InputField,
+         CheckboxField,
          SelectField,
          FieldsRow,
          CollapsableRows } from './fields';
+
+import { SPACE_GROUPS } from '../../constants';
 
 class Characterisation extends React.Component {
   constructor(props) {
@@ -142,6 +145,209 @@ class Characterisation extends React.Component {
                 </FieldsRow>
               </CollapsableRows>
             </Form>
+            <FieldsHeader title="Characterisation" />
+              <Form horizontal>
+                <FieldsRow>
+                  <CheckboxField
+                    propName="account_rad_damage"
+                    label="Account for radiation damage"
+                  />
+                  <CheckboxField
+                    propName="opt_sad"
+                    label="Optimised SAD"
+                  />
+                </FieldsRow>
+                <SelectField
+                  col1="4" col2="3"
+                  propName="strategy_complexity"
+                  label="Strategy complexity"
+                  list={['SINGLE', 'FEW', 'MANY']}
+                />
+              </Form>
+            <FieldsHeader title="Crystal" />
+            <CollapsableRows>
+              <Form horizontal>
+                <SelectField col1="3" col2="3"
+                  propName="space_group"
+                  label="Space group"
+                  list={SPACE_GROUPS}
+                />
+                <ControlLabel>Vertical Crystal dimension:</ControlLabel>
+                <FieldsRow>
+                  <InputField propName="min_crystal_vdim" label="Min" />
+                  <InputField propName="min_crystal_vphi" label="&omega; at min" />
+                </FieldsRow>
+                <FieldsRow>
+                  <InputField propName="max_crystal_vdim" label="Max" />
+                  <InputField propName="max_crystal_vphi" label="&omega; at max" />
+                </FieldsRow>
+              </Form>
+            </CollapsableRows>
+            <FieldsHeader title="Radiation damage model" />
+            <CollapsableRows>
+              <Form horizontal>
+                <FieldsRow>
+                  <InputField col1="6" col2="5" propName="beta" label="&beta; Å / Mgy" />
+                  <InputField col1="5" col2="5" propName="gamma" label="&gamma; 1/Mgy" />
+                  <InputField col1="6" col2="5" propName="rad_suscept" label="Sensetivity" />
+                </FieldsRow>
+              </Form>
+            </CollapsableRows>
+            <FieldsHeader title="Optimization parameters" />
+            <CollapsableRows>
+              <Form horizontal>
+                <FieldsRow>
+                  <InputField
+                    col1="6"
+                    col2="5"
+                    propName="aimed_i_sigma"
+                    label="Aimed I/&sigma; at highest resolution"
+                  />
+                  <InputField
+                    col1="5"
+                    col2="5"
+                    propName="aimed_completness"
+                    label="Aimed completness"
+                  />
+                </FieldsRow>
+                <Row>
+                  <Col xs="8">
+                    <CheckboxField
+                      propName="use_permitted_rotation"
+                      label="Use permitted rotaion range"
+                    />
+                  </Col>
+                </Row>
+                <FieldsRow>
+                  <InputField
+                    disabled={!this.props.use_permitted_rotation}
+                    col1="6"
+                    col2="5"
+                    propName="permitted_phi_start"
+                    label="&omega; start"
+                  />
+                  <InputField
+                    disabled={!this.props.use_permitted_rotation}
+                    col1="5"
+                    col2="5"
+                    propName="permitted_phi_end"
+                    label="&omega; end"
+                  />
+                </FieldsRow>
+                <FieldsRow>
+                  <CheckboxField
+                    propName="use_aimed_resolution"
+                    label="Maximum resolution"
+                  />
+                </FieldsRow>
+                <FieldsRow>
+                  <CheckboxField
+                    propName="use_aimed_multiplicity"
+                    label="Aimed Multiplicity"
+                  />
+                </FieldsRow>
+                <Row>
+                  <Col xs="8">
+                    <CheckboxField
+                      propName="low_res_pass_strat"
+                      label="Calculate low resolution pass strategy"
+                    />
+                  </Col>
+                </Row>
+              </Form>
+            </CollapsableRows>
+            <FieldsHeader title="Routine DC" />
+            <CollapsableRows>
+              <Form horizontal>
+                <FieldsRow>
+                  <CheckboxField
+                    propName="use_min_dose"
+                    disabled={this.props.use_min_time}
+                    label="Use min dose"
+                  />
+                  <InputField
+                    disabled={this.props.use_min_time}
+                    col1="6"
+                    col2="4"
+                    propName="min_dose"
+                    label="Dose limit MGy"
+                  />
+                </FieldsRow>
+                <FieldsRow>
+                  <CheckboxField
+                    propName="use_min_time"
+                    disabled={this.props.use_min_dose}
+                    label="Use min time"
+                  />
+                  <InputField
+                    disabled={this.props.use_min_dose}
+                    col1="6"
+                    col2="4"
+                    propName="min_time"
+                    label="Total limit (s)"
+                  />
+                </FieldsRow>
+              </Form>
+            </CollapsableRows>
+            <FieldsHeader title="SAD" />
+            <CollapsableRows>
+              <Form horizontal>
+              <Row>
+                <Col xs="10">
+                  <CheckboxField
+                    propName="auto_res"
+                    disabled={this.props.opt_sad}
+                    label="Resolution selected automatically, rotation interval 360 &deg;"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="10">
+                  <CheckboxField
+                    propName="opt_sad"
+                    disabled={this.props.auto_res}
+                    label="Optimal SAD for given resolution"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="8">
+                  <InputField
+                    disabled={!this.props.opt_sad}
+                    col1="4"
+                    col2="3"
+                    propName="sad_res"
+                    label="Resolution"
+                  />
+                </Col>
+              </Row>
+              </Form>
+            </CollapsableRows>
+            <FieldsHeader title="Radiation Damage" />
+            <CollapsableRows>
+              <Form horizontal>
+                <Row>
+                  <Col xs="10">
+                    <CheckboxField
+                      propName="determine_rad_params"
+                      label="Determine radiation damage parameters"
+                    />
+                  </Col>
+                </Row>
+                <InputField
+                  col1="6"
+                  col2="2"
+                  propName="burn_osc_start"
+                  label="Oscillation start for burn strategy"
+                />
+                 <InputField
+                   col1="6"
+                   col2="2"
+                   propName="burn_osc_interval"
+                   label="Oscillation interval for burn"
+                 />
+              </Form>
+           </CollapsableRows>
         </Modal.Body>
          { this.props.taskData.state ? '' :
            <Modal.Footer>
