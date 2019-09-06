@@ -84,6 +84,8 @@ export default class TaskItem extends Component {
     } else if (parameters.mesh) {
       const shape = shapes.shapes[parameters.shape];
       data.parameters.cell_count = shape.numCols * shape.numRows;
+      data.parameters.numCols = shape.numCols;
+      data.parameters.numRows = shape.numRows;
       this.props.showForm('Mesh', sampleId, data, parameters.shape);
     } else {
       this.props.showForm(type, sampleId, data, parameters.shape);
