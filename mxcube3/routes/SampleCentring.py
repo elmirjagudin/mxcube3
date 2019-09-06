@@ -495,8 +495,12 @@ def rotate_to():
 
         if phi_value:
             try:
-                mxcube.diffractometer.centringPhi.move(phi_value)
-            except:
+                if hasattr(mxcube.diffractometer, 'centringPhi'):
+                    mxcube.diffractometer.centringPhi.move(phi_value)
+                else:
+                    mxcube.diffractometer.centring_phi.move(phi_value)
+            except Exception as ex:
+                logging.getLogger('HWR').warning("Cannot rotate to, %s" %str(ex))
                 pass
             else:
                 resp.status_code = 200
