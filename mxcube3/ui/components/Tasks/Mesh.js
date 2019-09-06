@@ -209,7 +209,7 @@ Mesh = reduxForm({
   warn
 })(Mesh);
 
-const selector = formValueSelector('helical');
+const selector = formValueSelector('mesh');
 
 Mesh = connect(state => {
   const subdir = selector(state, 'subdir');
