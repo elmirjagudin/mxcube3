@@ -620,7 +620,9 @@ def move_motor(motid, newpos):
         :statuscode: 200: no error
         :statuscode: 409: error
     """
-    motor_hwobj = mxcube.diffractometer.getObjectByRole(motid.lower())
+    motor = motid.lower()
+    newpos = float(newpos)
+    motor_hwobj = mxcube.diffractometer.getObjectByRole(motor)
     if newpos == "stop":
         motor_hwobj.stop()
         return Response(status=200)
@@ -630,11 +632,14 @@ def move_motor(motid, newpos):
                                                     'msg': motid + ' already moving'
                                                     }
         limits = motor_hwobj.getLimits()
-        if not limits[0] <= float(newpos) <= limits[1]:
+        if motor == 'backlight' or motor == 'frontlight':
+            # scale (0, 1) to diff light limits
+            newpos = newpos * limits[1]
+        if not limits[0] <= newpos <= limits[1]:
             return 'position out of range', 406, {'Content-Type': 'application/json',
                                                   'msg': motid + ' position out of range, ' + str(limits)
                                                   }
-        motor_hwobj.move(float(newpos))
+        motor_hwobj.move(newpos)
         return Response(status=200)
 
 
