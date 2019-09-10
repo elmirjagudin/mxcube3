@@ -66,6 +66,9 @@ export default (state = initialState, action) => {
     case 'SET_AUTO_ADD_DIFFPLAN': {
       return { ...state, autoAddDiffPlan: action.autoadd };
     }
+    case 'RUN_CHARACTERISATION': {
+      return { ...state, runCharacterisation: action.runCharacterisation };
+    }
     case 'SET_CENTRING_METHOD': {
       return { ...state, centringMethod: action.centringMethod };
     }
@@ -95,6 +98,7 @@ export default (state = initialState, action) => {
           groupFolder: action.data.queue.groupFolder,
           autoMountNext: action.data.queue.autoMountNext,
           autoAddDiffPlan: action.data.queue.autoAddDiffPlan,
+          runCharacterisation: action.data.queue.runCharacterisation,
           numSnapshots: action.data.queue.numSnapshots,
           centringMethod: action.data.queue.centringMethod,
           current: { sampleID: action.data.queue.current,

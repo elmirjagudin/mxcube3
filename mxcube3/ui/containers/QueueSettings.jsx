@@ -17,6 +17,7 @@ class QueueSettings extends React.Component {
     this.setGroupFolderInput = this.setGroupFolderInput.bind(this);
     this.autoMountNextOnClick = this.autoMountNextOnClick.bind(this);
     this.setAutoAddDiffPlan = this.setAutoAddDiffPlan.bind(this);
+    this.runCharacterisation = this.runCharacterisation.bind(this);
     this.autoLoopCentringOnClick = this.autoLoopCentringOnClick.bind(this);
 
     this.inputValue = '';
@@ -42,6 +43,10 @@ class QueueSettings extends React.Component {
 
   autoMountNextOnClick(e) {
     this.props.queueActions.setAutoMountSample(e.target.checked);
+  }
+
+  runCharacterisation(e) {
+    this.props.queueActions.setRunCharacterisation(e.target.checked);
   }
 
   inputOnSelectHandler(e) {
@@ -98,6 +103,17 @@ class QueueSettings extends React.Component {
                     defaultChecked={this.props.queueState.autoAddDiffPlan}
                   >
                   Auto add diffraction plan
+                  </Checkbox>
+                </span>
+              </li>
+              <li role="presentation">
+                <span role="menuitem">
+                  <Checkbox
+                    name="runCharacterisation"
+                    onClick={this.runCharacterisation}
+                    defaultChecked={this.props.queueState.runCharacterisation}
+                  >
+                    Run Characterization
                   </Checkbox>
                 </span>
               </li>

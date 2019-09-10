@@ -279,6 +279,7 @@ def get_queue_state():
             "centringMethod": mxcube.CENTRING_METHOD,
             "autoMountNext": get_auto_mount_sample(),
             "autoAddDiffPlan": mxcube.AUTO_ADD_DIFFPLAN,
+            "runCharacterisation": mxcube.RUN_CHARACTERISATION,
             "numSnapshots": mxcube.NUM_SNAPSHOTS,
             "groupFolder": mxcube.session.get_group_name(),
             "queue": sample_order,
@@ -1280,6 +1281,7 @@ def add_characterisation(node_id, task):
 
     # the default value is True, here we adapt to mxcube3 needs
     char_model.auto_add_diff_plan = mxcube.AUTO_ADD_DIFFPLAN
+    char_model.run_characterisation = mxcube.RUN_CHARACTERISATION
     char_entry.auto_add_diff_plan = mxcube.AUTO_ADD_DIFFPLAN
 
     # A characterisation has two TaskGroups one for the characterisation itself
@@ -1612,6 +1614,24 @@ def set_auto_add_diffplan(autoadd, current_sample=None):
                 model, entry = get_entry(t['queueID'])
                 entry.auto_add_diff_plan = autoadd
 
+def set_run_characterisation(run_characterisation, current_sample=None):
+    """
+    Sets enable characterization plan flag.
+
+    :param bool run_characterisation: True enable char, False disable char
+    """
+    mxcube.RUN_CHARACTERISATION = run_characterisation
+    current_queue = queue_to_dict()
+    current_queue.pop('sample_order')
+    sampleIDs = current_queue.keys()
+    for sample in sampleIDs:
+        # this would be a sample
+        tasks = current_queue[sample]['tasks']
+        for t in tasks:
+            if t['type'] == 'Characterisation':
+                model, entry = get_entry(t['queueID'])
+                model.run_characterisation = run_characterisation
+
 def execute_entry_with_id(sid, tindex=None):
     """
     Execute the entry at position (sampleID, task index) in queue
@@ -1781,6 +1801,7 @@ def init_queue_settings():
     mxcube.NUM_SNAPSHOTS = mxcube.collect.getProperty('num_snapshots', 4)
     mxcube.AUTO_MOUNT_SAMPLE = mxcube.collect.getProperty('auto_mount_sample', False)
     mxcube.AUTO_ADD_DIFFPLAN = mxcube.collect.getProperty('auto_add_diff_plan', False)
+    mxcube.RUN_CHARACTERISATION = mxcube.collect.getProperty('run_characterisation', True)
 
 
 def add_default_sample():

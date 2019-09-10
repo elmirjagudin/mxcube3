@@ -748,6 +748,15 @@ def set_autoadd():
     resp.status_code = 200
     return resp
 
+@mxcube.route("/mxcube/api/v0.1/queue/run_characterisation", methods=["POST"])
+@mxcube.restrict
+def run_characterisation():
+    run_characterisation = request.get_json()
+    qutils.set_run_characterisation(run_characterisation)
+    resp = jsonify({'run_characterisation': run_characterisation})
+    resp.status_code = 200
+    return resp
+
 
 @mxcube.route("/mxcube/api/v0.1/queue/mock/diff_plan/<sid>", methods=["GET"])
 @mxcube.restrict
