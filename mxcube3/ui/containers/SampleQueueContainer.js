@@ -25,7 +25,7 @@ function mapStateToProps(state) {
     queue: state.queue.queue,
     autoMountNext: state.queue.autoMountNext,
     autoAddDiffPlan: state.queue.autoAddDiffPlan,
-    enableChar: state.queue.enableChar,
+    runCharacterisation: state.queue.runCharacterisation,
     centringMethod: state.queue.centringMethod,
     sampleList: state.sampleGrid.sampleList,
     sampleOrder: state.sampleGrid.order,
@@ -81,7 +81,7 @@ export default class SampleQueueContainer extends React.Component {
       loading,
       autoMountNext,
       autoAddDiffPlan,
-      enableChar,
+      runCharacterisation,
       centringMethod
     } = this.props;
     const {
@@ -97,7 +97,7 @@ export default class SampleQueueContainer extends React.Component {
       moveTask,
       setAutoMountSample,
       setAutoAddDiffPlan,
-      setEnableChar,
+      setRuncharacterisation,
       sendRunSample,
       sendSetCentringMethod,
       setEnabledSample
@@ -159,8 +159,8 @@ export default class SampleQueueContainer extends React.Component {
           autoMountNext={autoMountNext}
           setAutoAddDiffPlan={setAutoAddDiffPlan}
           autoAddDiffPlan={autoAddDiffPlan}
-          enableChar={enableChar}
-          setEnableChar={setEnableChar}
+          runCharacterisation={runCharacterisation}
+          setRuncharacterisation={setRuncharacterisation}
           mounted={current.sampleID}
           runSample={sendRunSample}
           sendSetCentringMethod={sendSetCentringMethod}
