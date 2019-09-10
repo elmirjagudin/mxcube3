@@ -4,7 +4,7 @@ flask-socketio==3.0.1
 gevent-websocket==0.10.1
 Flask-Session==0.3.1
 python-socketio==2.0.0
-louie
+louie==1.1
 redis
 scipy
 mock
