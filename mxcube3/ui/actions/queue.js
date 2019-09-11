@@ -683,6 +683,32 @@ export function setAutoAddDiffPlan(autoadddiffplan) {
   };
 }
 
+export function setRunCharacterisationAction(setruncharacterisation) {
+  return { type: 'RUN_CHARACTERISATION', setruncharacterisation };
+}
+
+export function setRunCharacterisation(setruncharacterisation) {
+  return function (dispatch) {
+    return fetch('mxcube/api/v0.1/queue/run_characterisation', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(setruncharacterisation)
+    }).then(response => {
+      if (response.status >= 400) {
+        dispatch(showErrorPanel(true, 'Could not set/unset run_characterisation'));
+      }
+      return response.json();
+    }).then(response => {
+      const a = response.run_characterisation;
+      dispatch(setRunCharacterisationAction(a));
+    });
+  };
+}
+
 export function sendSetCentringMethod(centringMethod) {
   return function (dispatch) {
     fetch('/mxcube/api/v0.1/sampleview/centring/centring_method', {
