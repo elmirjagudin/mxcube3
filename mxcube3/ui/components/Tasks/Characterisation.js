@@ -183,16 +183,6 @@ class Characterisation extends React.Component {
                 </FieldsRow>
               </Form>
             </CollapsableRows>
-            <FieldsHeader title="Radiation damage model" />
-            <CollapsableRows>
-              <Form horizontal>
-                <FieldsRow>
-                  <InputField col1="6" col2="5" propName="beta" label="&beta; Å / Mgy" />
-                  <InputField col1="5" col2="5" propName="gamma" label="&gamma; 1/Mgy" />
-                  <InputField col1="6" col2="5" propName="rad_suscept" label="Sensetivity" />
-                </FieldsRow>
-              </Form>
-            </CollapsableRows>
             <FieldsHeader title="Optimization parameters" />
             <CollapsableRows>
               <Form horizontal>
@@ -289,65 +279,6 @@ class Characterisation extends React.Component {
                 </FieldsRow>
               </Form>
             </CollapsableRows>
-            <FieldsHeader title="SAD" />
-            <CollapsableRows>
-              <Form horizontal>
-              <Row>
-                <Col xs="10">
-                  <CheckboxField
-                    propName="auto_res"
-                    disabled={this.props.opt_sad}
-                    label="Resolution selected automatically, rotation interval 360 &deg;"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="10">
-                  <CheckboxField
-                    propName="opt_sad"
-                    disabled={this.props.auto_res}
-                    label="Optimal SAD for given resolution"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col xs="8">
-                  <InputField
-                    disabled={!this.props.opt_sad}
-                    col1="4"
-                    col2="3"
-                    propName="sad_res"
-                    label="Resolution"
-                  />
-                </Col>
-              </Row>
-              </Form>
-            </CollapsableRows>
-            <FieldsHeader title="Radiation Damage" />
-            <CollapsableRows>
-              <Form horizontal>
-                <Row>
-                  <Col xs="10">
-                    <CheckboxField
-                      propName="determine_rad_params"
-                      label="Determine radiation damage parameters"
-                    />
-                  </Col>
-                </Row>
-                <InputField
-                  col1="6"
-                  col2="2"
-                  propName="burn_osc_start"
-                  label="Oscillation start for burn strategy"
-                />
-                 <InputField
-                   col1="6"
-                   col2="2"
-                   propName="burn_osc_interval"
-                   label="Oscillation interval for burn"
-                 />
-              </Form>
-           </CollapsableRows>
         </Modal.Body>
          { this.props.taskData.state ? '' :
            <Modal.Footer>
