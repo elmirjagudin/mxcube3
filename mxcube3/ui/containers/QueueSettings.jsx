@@ -113,7 +113,7 @@ class QueueSettings extends React.Component {
                     onClick={this.runCharacterisation}
                     defaultChecked={this.props.queueState.runCharacterisation}
                   >
-                    Run Characterization
+                    Characterization analysis
                   </Checkbox>
                 </span>
               </li>
