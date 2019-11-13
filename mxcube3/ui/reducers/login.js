@@ -54,6 +54,14 @@ export default (state = initialState, action) => {
           selectedProposalID: propId
         };
       }
+    case 'UNSELECT_PROPOSAL':
+      {
+        return {
+          ...state,
+          selectedProposal: '',
+          selectedProposalID: ''
+        };
+      }
     case 'HIDE_PROPOSALS_FORM':
       {
         return { ...state, showProposalsForm: false };
