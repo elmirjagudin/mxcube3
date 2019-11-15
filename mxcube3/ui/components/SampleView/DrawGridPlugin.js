@@ -211,7 +211,7 @@ export default class DrawGridPlugin {
     const numCols = Math.ceil(width / cellTW);
     const numRows = Math.ceil(height / cellTH);
 
-    const cellLimit = 10000;
+    const cellLimit = 50000;
 
     const draw = this.drawing && validPosition && (numCols * numRows) < cellLimit;
 
