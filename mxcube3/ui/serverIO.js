@@ -90,6 +90,12 @@ class ServerIO {
     this.hwrSocket.emit('setRaObserver', { master: true, name }, cb);
   }
 
+  closeSockets() {
+    this.hwrSocket.disconnect();
+    this.loggingSocket.disconnect();
+    this.uiStateSocket.disconnect();
+  }
+
   listen(store) {
     this.dispatch = store.dispatch;
 
@@ -261,8 +267,8 @@ class ServerIO {
 
     this.hwrSocket.on('signout', () => {
       this.dispatch(forceSignOut());
+      this.closeSockets();
     });
-
 
     this.hwrSocket.on('observerLogin', (observer) => {
       if (observer.name && observer.host) {
@@ -277,6 +283,7 @@ class ServerIO {
 
       if (!ra.master) {
         this.dispatch(doSignOut());
+        this.closeSockets();
       }
     });
 
