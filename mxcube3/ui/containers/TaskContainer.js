@@ -27,6 +27,7 @@ import {
   addSamplesToList
 } from '../actions/sampleGrid';
 
+import './task.css';
 
 class TaskContainer extends React.Component {
   constructor(props) {
