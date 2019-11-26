@@ -137,6 +137,8 @@ def signout():
             mxcube.CURRENTLY_MOUNTED_SAMPLE = ''
 
     user = remove_user(session.sid)
+    # to make sure the client will close this user's websocket channels
+    socketio.emit("signout", user, room=user["socketio_sid"], namespace='/hwr')
 
     if not logged_in_users(exclude_inhouse=False):
         qutils.save_queue(session)
