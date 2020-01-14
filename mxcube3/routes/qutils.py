@@ -944,13 +944,13 @@ def set_dc_params(model, entry, task_data, sample_model):
     acq.acquisition_parameters.set_from_dict(params)
 
     processing_params = model.processing_parameters
-    processing_params.space_group = params.get('space_group') or 0
-    processing_params.cell_a = params.get('cellA') or 0
-    processing_params.cell_alpha = params.get('cellAlpha') or 0
-    processing_params.cell_b = params.get('cellB') or 0
-    processing_params.cell_beta = params.get('cellBeta') or 0
-    processing_params.cell_c = params.get('cellC') or 0
-    processing_params.cell_gamma = params.get('cellGamma') or 0
+    processing_params.space_group = params.get('space_group', 0)
+    processing_params.cell_a = params.get('cellA', 0)
+    processing_params.cell_alpha = params.get('cellAlpha', 0)
+    processing_params.cell_b = params.get('cellB', 0)
+    processing_params.cell_beta = params.get('cellBeta', 0)
+    processing_params.cell_c = params.get('cellC', 0)
+    processing_params.cell_gamma = params.get('cellGamma', 0)
 
     ftype = mxcube.beamline.detector_hwobj.getProperty('file_suffix')
     ftype = ftype if ftype else '.?'
