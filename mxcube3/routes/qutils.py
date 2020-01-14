@@ -291,6 +291,7 @@ def get_queue_state():
 
 def _handle_dc(sample_node, node, include_lims_data=False):
     parameters = node.as_dict()
+
     parameters["shape"] = getattr(node, 'shape', '')
     parameters["helical"] = node.experiment_type == qme.EXPERIMENT_TYPE.HELICAL
     parameters["mesh"] = node.experiment_type == qme.EXPERIMENT_TYPE.MESH
@@ -942,6 +943,15 @@ def set_dc_params(model, entry, task_data, sample_model):
     params = task_data['parameters']
     acq.acquisition_parameters.set_from_dict(params)
 
+    processing_params = model.processing_parameters
+    processing_params.space_group = params.get('space_group', 0)
+    processing_params.cell_a = params.get('cellA', 0)
+    processing_params.cell_alpha = params.get('cellAlpha', 0)
+    processing_params.cell_b = params.get('cellB', 0)
+    processing_params.cell_beta = params.get('cellBeta', 0)
+    processing_params.cell_c = params.get('cellC', 0)
+    processing_params.cell_gamma = params.get('cellGamma', 0)
+
     ftype = mxcube.beamline.detector_hwobj.getProperty('file_suffix')
     ftype = ftype if ftype else '.?'
 
@@ -1316,6 +1326,7 @@ def add_data_collection(node_id, task):
     """
     sample_model, sample_entry = get_entry(node_id)
     dc_model, dc_entry = _create_dc(task)
+
     set_dc_params(dc_model, dc_entry, task, sample_model)
 
     pt = dc_model.acquisitions[0].path_template
