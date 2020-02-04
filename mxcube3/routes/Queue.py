@@ -256,6 +256,8 @@ def queue_update_item(sqid, tqid):
         qutils.set_dc_params(model, entry, data, sample_model)
     elif data["type"] == "Characterisation":
         qutils.set_char_params(model, entry, data, sample_model)
+    elif data["type"] == "XRFScan":
+        qutils.set_xrf_params(model, entry, data, sample_model)
 
     #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
 
@@ -600,13 +602,8 @@ def get_default_xrf_parameters():
 
     try:
         int_time =  mxcube.beamline.getObjectByRole('xrf_spectrum').\
-                    getProperty('default_integration_time', '5').strip()
-        try:
-            int(int_time)
-        except ValueError:
-            pass
-
-    except Exception:
+                    getProperty('default_integration_time', '5')
+    except Exception as ex:
         msg = "Failed to get object with role: xrf_spectrum. "
         msg += "cannot get default values for XRF"
         logging.getLogger("HWR").error(msg)

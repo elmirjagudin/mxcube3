@@ -1122,7 +1122,7 @@ def set_xrf_params(model, entry, task_data, sample_model):
     model.path_template.precision = '0' + str(mxcube.session["file_info"].\
         getProperty("precision", 4))
 
-    if params['prefix']:
+    if params.get('prefix', False):
         model.path_template.base_prefix = params['prefix']
     else:
         model.path_template.base_prefix = mxcube.session.\
