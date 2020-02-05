@@ -7,7 +7,7 @@ python-socketio==2.0.0
 louie==1.1
 redis
 scipy
-mock
+mock==3.0.5
 pbr       # Depdency of mock, needs to be installed manualy (problem with mock package)
 funcsigs  # Depdency of mock, needs to be installed manualy (problem with mock package)
 jsonpickle
