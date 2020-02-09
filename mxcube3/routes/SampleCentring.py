@@ -625,12 +625,12 @@ def move_motor(motid, newpos):
         :statuscode: 409: error
     """
     motor = motid.lower()
-    newpos = float(newpos)
     motor_hwobj = mxcube.diffractometer.getObjectByRole(motor)
     if newpos == "stop":
         motor_hwobj.stop()
         return Response(status=200)
     else:
+        newpos = float(newpos)
         if motor_hwobj.getState() != 2:
             return 'motor is already moving', 406, {'Content-Type': 'application/json',
                                                     'msg': motid + ' already moving'
