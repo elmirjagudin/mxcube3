@@ -72,18 +72,19 @@ class AddSample extends React.Component {
         <Modal.Body>
           <Form horizontal>
             <FieldsRow>
-              <InputField propName="sampleName"
-                autoFocus
-                label="Sample Name"
-                inputRef={(input) => {this.sampleName = input;}}
-                col1="4" col2="7"
-              />
               <InputField propName="proteinAcronym"
                 label="Protein Acronym"
                 inputRef={(input) => {this.proteinAcronym = input;}}
                 col1="4" col2="7"
                 onKeyPress={this.handleKeyPress}
               />
+              <InputField propName="sampleName"
+                autoFocus
+                label="Sample Name"
+                inputRef={(input) => {this.sampleName = input;}}
+                col1="4" col2="7"
+              />
+
             </FieldsRow>
           </Form>
         </Modal.Body>
