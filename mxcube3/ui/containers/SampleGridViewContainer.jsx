@@ -202,14 +202,6 @@ class SampleGridViewContainer extends React.Component {
       subdir += this.props.defaultParameters[formName.toLowerCase()].subDirTemplate;
     }
 
-    const parameters = { parameters: {
-      ...this.props.defaultParameters[formName.toLowerCase()],
-      ...extraParams,
-      prefix,
-      path,
-      subdir,
-      shape: -1 } };
-
     const selected = [];
 
     for (const sampleID in this.props.selected) {
@@ -217,6 +209,25 @@ class SampleGridViewContainer extends React.Component {
         selected.push(sampleID);
       }
     }
+    const sampleInfo = this.props.sampleList[selected[0]];
+    const procParams = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+    'cellGamma', 'crystalSpaceGroup'];
+    const procParamsDict = {};
+
+    procParams.forEach(element => {
+      if (element in sampleInfo) {
+        procParamsDict[element] = sampleInfo[element];
+      }
+    });
+
+    const parameters = { parameters: {
+      ...this.props.defaultParameters[formName.toLowerCase()],
+      ...extraParams,
+      ...procParamsDict,
+      prefix,
+      path,
+      subdir,
+      shape: -1 } };
 
     if (formName === 'AddSample') {
       this.props.showTaskParametersForm('AddSample');

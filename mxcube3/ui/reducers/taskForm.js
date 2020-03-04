@@ -82,16 +82,25 @@ export default (state = initialState, action) => {
     case 'UPDATE_DEFAULT_PARAMETERS':
       {
         let type = action.data.type.toLowerCase();
+
         if (action.data.helical) {
           type = 'helical';
         } else if (action.data.mesh) {
           type = 'mesh';
         }
+        const params = action.data;
+        const procParams = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+        'cellGamma', 'crystalSpaceGroup'];
+        procParams.forEach(element => {
+          if (element in action.data) {
+            delete params[element];
+          }
+        });
         return {
           ...state,
           defaultParameters: {
             ...state.defaultParameters, [type]: {
-              ...action.data
+              ...params
             }
           }
         };

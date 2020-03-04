@@ -52,7 +52,7 @@ class DataCollection extends React.Component {
       'inverse_beam',
       'centringMethod',
       'detector_mode',
-      'space_group',
+      'crystalSpaceGroup',
       'prefix',
       'subdir',
       'type',
@@ -235,7 +235,7 @@ class DataCollection extends React.Component {
             <CollapsableRows>
               <Form horizontal>
                 <SelectField col1="3" col2="3"
-                  propName="space_group"
+                  propName="crystalSpaceGroup"
                   label="Space group"
                   list={SPACE_GROUPS}
                 />

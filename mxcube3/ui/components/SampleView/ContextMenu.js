@@ -215,11 +215,21 @@ export default class ContextMenu extends React.Component {
       this.props.sampleActions.sendAcceptCentring();
     }
 
+    const procParams = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+    'cellGamma', 'crystalSpaceGroup'];
+    const procParamsDict = {};
+    procParams.forEach(element => {
+      if (element in sampleData) {
+        procParamsDict[element] = sampleData[element];
+      }
+    });
+
     this.props.showForm(
       modalName,
       [sampleID],
       { parameters:
         { ...defaultParameters[modalName.toLowerCase()],
+          ...procParamsDict,
           ...wf,
           prefix: sampleData.defaultPrefix,
           subdir: `${this.props.groupFolder}${sampleData.defaultSubDir}`,

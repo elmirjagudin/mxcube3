@@ -78,7 +78,22 @@ export default class TaskItem extends Component {
 
   showForm() {
     const { data, sampleId, shapes } = this.props;
-    const { type, parameters } = data;
+
+    const sampleInfo = this.props.sampleList[sampleId];
+    const procParams = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+    'cellGamma', 'crystalSpaceGroup'];
+    const procParamsDict = {};
+
+    procParams.forEach(element => {
+      if (element in sampleInfo) {
+        procParamsDict[element] = sampleInfo[element];
+      }
+    });
+
+    const { type } = data;
+    const parameters = { ...data.parameters, ...procParamsDict };
+    data.parameters = parameters;
+
     if (parameters.helical) {
       this.props.showForm('Helical', sampleId, data, parameters.shape);
     } else if (parameters.mesh) {
