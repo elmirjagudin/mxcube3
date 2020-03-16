@@ -270,7 +270,7 @@ export class SampleGridItem extends React.Component {
           <span className="col-sm-6">Data matrix:</span>
           <span className="col-sm-6">{sampleData.code}</span>
         </div>
-        { sampleData.limsID ? limsData : '' }
+        { limsData }
       </div>
     );
   }

@@ -63,5 +63,7 @@ export const SPACE_GROUPS =
      'P432', 'P4232', 'P4332', 'P4132', 'F23', 'F432',
      'F4132', 'I23', 'I213', 'I432', 'I4132'];
 
+export const PROCESSING_PARAMS = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+'cellGamma', 'crystalSpaceGroup'];
 
 /* eslint-enable no-unused-vars */

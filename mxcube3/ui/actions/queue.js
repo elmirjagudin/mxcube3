@@ -496,7 +496,12 @@ export function addDiffractionPlanAction(tasks) {
   return { type: 'ADD_DIFF_PLAN', tasks };
 }
 
+export function updateSampleInfo(sampleID, parameters) {
+  return { type: 'SET_SAMPLE_INFO', sampleID, parameters };
+}
+
 export function addTask(sampleIDs, parameters, runNow) {
+  console.log('addTask queue.action', sampleIDs, parameters);
   return function (dispatch, getState) {
     const state = getState();
     const samples = [];
@@ -548,6 +553,7 @@ export function addTask(sampleIDs, parameters, runNow) {
       return response.json();
     }).then((data) => {
       dispatch(setQueue(data));
+      dispatch(updateSampleInfo(sampleIDs, parameters));
       if (runNow) {
         const sl = data.sampleList;
         const taskIndex = sl[sampleIDs[0]].tasks[sl[sampleIDs[0]].tasks.length - 1].taskIndex;
@@ -556,7 +562,6 @@ export function addTask(sampleIDs, parameters, runNow) {
     }).catch(() => (queueLoading(false))).then(() => (dispatch(queueLoading(false))));
   };
 }
-
 
 export function addTaskResultAction(sampleID, taskIndex, state, progress, limsResultData, queueID) {
   return { type: 'ADD_TASK_RESULT', sampleID, taskIndex, state, progress, limsResultData, queueID };

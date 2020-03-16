@@ -930,6 +930,33 @@ def add_sample(sample_id, item):
 
     return sample_model._node_id
 
+def set_crystal_params(sample_model, params):
+    """
+    Method that populates crystal parameters from data supplied in the task data instead of lims.
+
+    :param SampleModel: The model to set parameters of
+    :param dict task_data: Dictionary with new parameters
+    """
+    param_dict = {}
+    if sample_model.get_processing_parameters().space_group == "":
+        #nothing has been set before so do it now
+        sample_model.crystals[0].space_group = params.get('crystalSpaceGroup', '')
+        param_dict['crystalSpaceGroup'] = params.get('crystalSpaceGroup', '')
+        sample_model.crystals[0].cell_a = params.get('cellA', 0)
+        param_dict['cellA'] = params.get('cellA', 0)
+        sample_model.crystals[0].cell_alpha = params.get('cellAlpha', 0)
+        param_dict['cellAlpha'] = params.get('cellAlpha', 0)
+        sample_model.crystals[0].cell_b = params.get('cellB', 0)
+        param_dict['cellB'] = params.get('cellB', 0)
+        sample_model.crystals[0].cell_beta = params.get('cellBeta', 0)
+        param_dict['cellBeta'] = params.get('cellBeta', 0)
+        sample_model.crystals[0].cell_c = params.get('cellC', 0)
+        param_dict['cellC'] = params.get('cellC', 0)
+        sample_model.crystals[0].cell_gamma = params.get('cellGamma', 0)
+        param_dict['cellGamma'] = params.get('cellGamma', 0)
+
+    return param_dict
+
 
 def set_dc_params(model, entry, task_data, sample_model):
     """
@@ -942,7 +969,6 @@ def set_dc_params(model, entry, task_data, sample_model):
     acq = model.acquisitions[0]
     params = task_data['parameters']
     acq.acquisition_parameters.set_from_dict(params)
-
     processing_params = model.processing_parameters
     processing_params.space_group = params.get('space_group', 0)
     processing_params.cell_a = params.get('cellA', 0)
@@ -951,7 +977,8 @@ def set_dc_params(model, entry, task_data, sample_model):
     processing_params.cell_beta = params.get('cellBeta', 0)
     processing_params.cell_c = params.get('cellC', 0)
     processing_params.cell_gamma = params.get('cellGamma', 0)
-
+    proc_params = set_crystal_params(sample_model, params)
+    limsutils.sample_list_update_sample(task_data.get('sampleID', None), proc_params)
     ftype = mxcube.beamline.detector_hwobj.getProperty('file_suffix')
     ftype = ftype if ftype else '.?'
 
