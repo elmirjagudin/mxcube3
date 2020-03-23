@@ -83,13 +83,15 @@ export default class TaskItem extends Component {
     const procParams = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
     'cellGamma', 'crystalSpaceGroup'];
     const procParamsDict = {};
-
-    procParams.forEach(element => {
-      if (element in sampleInfo) {
-        procParamsDict[element] = sampleInfo[element];
-      }
-    });
-
+    // if processing parameters have not been set get them from the sample
+    const savedTaskData = this.props.sampleList[sampleId].tasks[this.props.index].parameters;
+    if (savedTaskData.crystalSpaceGroup === '') {
+      procParams.forEach(element => {
+        if (element in sampleInfo) {
+          procParamsDict[element] = sampleInfo[element];
+        }
+      });
+    }
     const { type } = data;
     const parameters = { ...data.parameters, ...procParamsDict };
     data.parameters = parameters;

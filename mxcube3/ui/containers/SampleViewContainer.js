@@ -90,6 +90,7 @@ class SampleViewContainer extends Component {
                 <ContextMenu
                   {...this.props.contextMenu}
                   sampleActions={this.props.sampleViewActions}
+                  sampleList={this.props.sampleList}
                   updateTask={this.props.updateTask}
                   availableMethods={this.props.availableMethods}
                   showForm={this.props.showForm}

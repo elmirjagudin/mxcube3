@@ -315,6 +315,14 @@ def _handle_dc(sample_node, node, include_lims_data=False):
     parameters['fullPath'] = os.path.join(parameters['path'],
                                           parameters['fileName'])
 
+    parameters['crystalSpaceGroup'] = node.processing_parameters.space_group
+    parameters['cellA'] = node.processing_parameters.cell_a
+    parameters['cellAlpha'] = node.processing_parameters.cell_alpha
+    parameters['cellB'] = node.processing_parameters.cell_b
+    parameters['cellBeta'] = node.processing_parameters.cell_beta
+    parameters['cellC'] = node.processing_parameters.cell_c
+    parameters['cellGamma'] = node.processing_parameters.cell_gamma
+
     limsres = {}
     lims_id = mxcube.NODE_ID_TO_LIMS_ID.get(node._node_id, 'null')
 
@@ -938,22 +946,20 @@ def set_crystal_params(sample_model, params):
     :param dict task_data: Dictionary with new parameters
     """
     param_dict = {}
-    if sample_model.get_processing_parameters().space_group == "":
-        #nothing has been set before so do it now
-        sample_model.crystals[0].space_group = params.get('crystalSpaceGroup', '')
-        param_dict['crystalSpaceGroup'] = params.get('crystalSpaceGroup', '')
-        sample_model.crystals[0].cell_a = params.get('cellA', 0)
-        param_dict['cellA'] = params.get('cellA', 0)
-        sample_model.crystals[0].cell_alpha = params.get('cellAlpha', 0)
-        param_dict['cellAlpha'] = params.get('cellAlpha', 0)
-        sample_model.crystals[0].cell_b = params.get('cellB', 0)
-        param_dict['cellB'] = params.get('cellB', 0)
-        sample_model.crystals[0].cell_beta = params.get('cellBeta', 0)
-        param_dict['cellBeta'] = params.get('cellBeta', 0)
-        sample_model.crystals[0].cell_c = params.get('cellC', 0)
-        param_dict['cellC'] = params.get('cellC', 0)
-        sample_model.crystals[0].cell_gamma = params.get('cellGamma', 0)
-        param_dict['cellGamma'] = params.get('cellGamma', 0)
+    sample_model.crystals[0].space_group = params.get('crystalSpaceGroup', '')
+    param_dict['crystalSpaceGroup'] = params.get('crystalSpaceGroup', '')
+    sample_model.crystals[0].cell_a = params.get('cellA', 0)
+    param_dict['cellA'] = params.get('cellA', 0)
+    sample_model.crystals[0].cell_alpha = params.get('cellAlpha', 0)
+    param_dict['cellAlpha'] = params.get('cellAlpha', 0)
+    sample_model.crystals[0].cell_b = params.get('cellB', 0)
+    param_dict['cellB'] = params.get('cellB', 0)
+    sample_model.crystals[0].cell_beta = params.get('cellBeta', 0)
+    param_dict['cellBeta'] = params.get('cellBeta', 0)
+    sample_model.crystals[0].cell_c = params.get('cellC', 0)
+    param_dict['cellC'] = params.get('cellC', 0)
+    sample_model.crystals[0].cell_gamma = params.get('cellGamma', 0)
+    param_dict['cellGamma'] = params.get('cellGamma', 0)
 
     return param_dict
 
@@ -970,7 +976,7 @@ def set_dc_params(model, entry, task_data, sample_model):
     params = task_data['parameters']
     acq.acquisition_parameters.set_from_dict(params)
     processing_params = model.processing_parameters
-    processing_params.space_group = params.get('space_group', 0)
+    processing_params.space_group = params.get('crystalSpaceGroup', '')
     processing_params.cell_a = params.get('cellA', 0)
     processing_params.cell_alpha = params.get('cellAlpha', 0)
     processing_params.cell_b = params.get('cellB', 0)
