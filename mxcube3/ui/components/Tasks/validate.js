@@ -1,4 +1,4 @@
-import { PROCESSING_PARAMS, CRYSTAL_CELL_PARAMS } from '../../constants';
+import { CRYSTAL_CELL_PARAMS } from '../../constants';
 
 const everpolate = require('everpolate');
 
