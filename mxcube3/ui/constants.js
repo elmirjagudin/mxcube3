@@ -66,4 +66,7 @@ export const SPACE_GROUPS =
 export const PROCESSING_PARAMS = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
 'cellGamma', 'crystalSpaceGroup'];
 
+export const CRYSTAL_CELL_PARAMS = ['cellA', 'cellAlpha', 'cellB', 'cellBeta', 'cellC',
+'cellGamma'];
+
 /* eslint-enable no-unused-vars */

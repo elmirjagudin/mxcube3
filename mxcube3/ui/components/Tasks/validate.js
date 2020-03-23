@@ -1,3 +1,5 @@
+import { PROCESSING_PARAMS, CRYSTAL_CELL_PARAMS } from '../../constants';
+
 const everpolate = require('everpolate');
 
 const validate = (values, props) => {
@@ -84,6 +86,25 @@ const validate = (values, props) => {
     errors.osc_range = 'Omega out of limits';
     errors.num_images = 'Omega out of limits';
   }
+  if (values.crystalSpaceGroup === '' || !('crystalSpaceGroup' in values)) {
+    CRYSTAL_CELL_PARAMS.forEach(param => {
+      if (param in values) {
+        errors[param] = 'Space group not defined';
+      }
+    });
+  } else {
+    // the user must add all the crystal cell parameters, or none
+    const someParamsDefined = CRYSTAL_CELL_PARAMS.some(param => param in values
+      && values[param] !== '');
+    if (someParamsDefined) {
+      CRYSTAL_CELL_PARAMS.forEach(param => {
+        if (!(param in values) || values[param] === '') {
+          errors[param] = 'Missing information';
+        }
+      });
+    }
+  }
+
   return errors;
 };
 
