@@ -112,7 +112,7 @@ export default (state = INITIAL_STATE, action) => {
         const sample = state.sampleList[key];
         let sampleInfo;
         for (sampleInfo of action.sampleID) {
-          if ((sample.sampleID === sampleInfo) && !('crystalSpaceGroup' in sample)) {
+          if (sample.sampleID === sampleInfo) {
             // Add proc params
             PROCESSING_PARAMS.forEach(par => {
               if (action.parameters[par]) {

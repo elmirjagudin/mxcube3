@@ -468,6 +468,9 @@ export function updateTaskAction(sampleID, taskIndex, taskData) {
   return { type: 'UPDATE_TASK', sampleID, taskIndex, taskData };
 }
 
+export function updateSampleInfo(sampleID, parameters) {
+  return { type: 'SET_SAMPLE_INFO', sampleID, parameters };
+}
 
 export function updateTask(sampleID, taskIndex, params, runNow) {
   return function (dispatch, getState) {
@@ -484,7 +487,7 @@ export function updateTask(sampleID, taskIndex, params, runNow) {
         return response.json();
       }).then((data) => {
         dispatch(updateTaskAction(sampleID, taskIndex, data));
-
+        dispatch(updateSampleInfo([sampleID], params));
         if (runNow) {
           dispatch(sendRunSample(sampleID, taskIndex));
         }
@@ -496,12 +499,7 @@ export function addDiffractionPlanAction(tasks) {
   return { type: 'ADD_DIFF_PLAN', tasks };
 }
 
-export function updateSampleInfo(sampleID, parameters) {
-  return { type: 'SET_SAMPLE_INFO', sampleID, parameters };
-}
-
 export function addTask(sampleIDs, parameters, runNow) {
-  console.log('addTask queue.action', sampleIDs, parameters);
   return function (dispatch, getState) {
     const state = getState();
     const samples = [];
