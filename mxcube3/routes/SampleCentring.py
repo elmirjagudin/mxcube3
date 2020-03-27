@@ -365,6 +365,28 @@ def shape_mock_result(sid):
 
     return Response(status=200)
 
+@mxcube.route("/mxcube/api/v0.1/sampleview/shape_result/<sid>", methods=['POST'])
+def shape_result(sid):
+    """
+    Update grid result data.
+        :parameter shape_data: dict with a list of results (cell number, score value)
+        :response Content-type: application/json, response status.
+        :statuscode: 200: no error
+        :statuscode: 409: error
+    """
+
+    shape = mxcube.shapes.get_shape(sid)
+    params = request.get_json()
+    results = params.get('results', None)
+    res={}
+    if shape and results is not None:
+        for i in range(1, shape.num_rows*shape.num_cols + 1):
+            res[i] = [i,results.get(str(i),[0,0,0,0])]
+        mxcube.shapes.set_grid_data(sid, res)
+        signals.grid_result_available(to_camel(shape.as_dict()))
+
+    return Response(status=200)
+
 @mxcube.route("/mxcube/api/v0.1/sampleview/shapes/<sid>", methods=['POST'])
 def shape_add_cell_result(sid):
     """
