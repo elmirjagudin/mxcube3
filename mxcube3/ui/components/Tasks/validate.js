@@ -86,9 +86,10 @@ const validate = (values, props) => {
     errors.osc_range = 'Omega out of limits';
     errors.num_images = 'Omega out of limits';
   }
+
   if (values.crystalSpaceGroup === '' || !('crystalSpaceGroup' in values)) {
     CRYSTAL_CELL_PARAMS.forEach(param => {
-      if (param in values) {
+      if ((param in values) && values[param] !== '') {
         errors[param] = 'Space group not defined';
       }
     });
