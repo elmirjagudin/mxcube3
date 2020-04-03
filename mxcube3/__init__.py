@@ -64,13 +64,13 @@ opt_parser.add_option("-w", "--ra",
                       action="store_true",
                       dest="allow_remote",
                       help="Enable remote access",
-                      default=False)
+                      default=True)
 
 opt_parser.add_option("-t", "--ra-timeout",
                       action="store_true",
                       dest="ra_timeout",
                       help="Timeout gives control",
-                      default=False)
+                      default=True)
 
 cmdline_options, args = opt_parser.parse_args()
 
