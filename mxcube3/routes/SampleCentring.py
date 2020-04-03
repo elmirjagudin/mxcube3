@@ -10,6 +10,7 @@ import json
 import PIL
 import cStringIO
 import subprocess
+import numpy as np
 
 from mxcube3 import app as mxcube
 from mxcube3.routes import Utils
@@ -378,10 +379,35 @@ def shape_result(sid):
     shape = mxcube.shapes.get_shape(sid)
     params = request.get_json()
     results = params.get('results', None)
+    cell_counting = mxcube.beamline['default_mesh_values'].getProperty('cell_counting', 'zig-zag')
     res={}
     if shape and results is not None:
         for i in range(1, shape.num_rows*shape.num_cols + 1):
             res[i] = [i,results.get(str(i),[0,0,0,0])]
+        if cell_counting == "inverse-zig-zag":
+            rows = shape.num_rows
+            cols = shape.num_cols
+            cell_count = rows * cols
+
+            array=np.arange(1,rows*cols+1)
+            array_reshape = array.reshape(cols,rows)
+            # this is for zig-zag
+            for index in xrange(cols):
+                if index%2==1:
+                    array_reshape[index] = np.flipud(array_reshape[index])
+            # now we need inverse
+            array_new = np.zeros(cell_count,dtype=int)
+            k=0
+            for j in xrange(array_reshape.shape[1]):
+                for i in xrange(array_reshape.shape[0]):
+                    array_new[k] = array_reshape[i][j]
+                    k=k+1
+            cell_list = np.flipud(array_new)
+            res_tmp = {}
+            for i in xrange(cell_count):
+                res_tmp[i+1] = res[cell_list[i]]
+                #res_tmp[i+1] = [i+1,res[cell_list[i]][1]]
+            res = res_tmp
         mxcube.shapes.set_grid_data(sid, res)
         signals.grid_result_available(to_camel(shape.as_dict()))
 
