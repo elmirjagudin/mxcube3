@@ -49,7 +49,7 @@ class Characterisation extends React.Component {
       'detector_mode',
       'account_rad_damage',
       'opt_sad',
-      'space_group',
+      'crystalSpaceGroup',
       'strategy_complexity',
       'prefix',
       'subdir',
@@ -168,7 +168,7 @@ class Characterisation extends React.Component {
             <CollapsableRows>
               <Form horizontal>
                 <SelectField col1="3" col2="3"
-                  propName="space_group"
+                  propName="crystalSpaceGroup"
                   label="Space group"
                   list={SPACE_GROUPS}
                 />

@@ -12,7 +12,7 @@
 *
 *  filterText: Current filter text
 */
-import { SAMPLE_MOUNTED, TASK_UNCOLLECTED } from '../constants';
+import { SAMPLE_MOUNTED, TASK_UNCOLLECTED, PROCESSING_PARAMS } from '../constants';
 
 const INITIAL_STATE = { selected: {},
                         sampleList: {},
@@ -103,6 +103,27 @@ export default (state = INITIAL_STATE, action) => {
           sampleList[key] = Object.assign({}, sample, { });
         }
       });
+      return Object.assign({}, state, { sampleList });
+    }
+    case 'SET_SAMPLE_INFO': {
+      const sampleList = {};
+
+      Object.keys(state.sampleList).forEach(key => {
+        const sample = state.sampleList[key];
+        let sampleInfo;
+        for (sampleInfo of action.sampleID) {
+          if (sample.sampleID === sampleInfo) {
+            // Add proc params
+            PROCESSING_PARAMS.forEach(par => {
+              if (action.parameters[par]) {
+                sample[par] = action.parameters[par];
+              }
+            });
+          }
+        }
+        sampleList[key] = Object.assign({}, sample, { });
+      });
+
       return Object.assign({}, state, { sampleList });
     }
     case 'ADD_SAMPLES_TO_QUEUE': {

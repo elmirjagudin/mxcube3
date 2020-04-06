@@ -74,8 +74,8 @@ export function filterAction(filterOptions) {
 }
 
 
-export function setSamplesInfoAction(sampleInfoList) {
-  return { type: 'SET_SAMPLES_INFO', sampleInfoList };
+export function updateSampleInfo(sampleInfoList) {
+  return { type: 'SET_SAMPLE_INFO', sampleInfoList };
 }
 
 

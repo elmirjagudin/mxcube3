@@ -112,7 +112,6 @@ export default class CurrentTree extends React.Component {
     }
 
     if (! this.props.show) { return <div />; }
-
     return (
       <div>
         <div style={{ top: 'initial' }} className="list-body" >
@@ -196,6 +195,7 @@ export default class CurrentTree extends React.Component {
                   index={i}
                   id={`${taskData.queueID}`}
                   data={taskData}
+                  sampleList={this.props.sampleList}
                   moveCard={this.moveCard}
                   deleteTask={this.props.deleteTask}
                   sampleId={sampleData.sampleID}
@@ -220,6 +220,7 @@ export default class CurrentTree extends React.Component {
                   index={i}
                   id={`${taskData.queueID}`}
                   data={taskData}
+                  sampleList={this.props.sampleList}
                   moveCard={this.moveCard}
                   deleteTask={this.props.deleteTask}
                   sampleId={sampleData.sampleID}
