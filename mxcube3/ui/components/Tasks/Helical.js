@@ -14,6 +14,8 @@ import { FieldsHeader,
          FieldsRow,
          CollapsableRows } from './fields';
 
+import { SPACE_GROUPS } from '../../constants';
+
 class Helical extends React.Component {
   constructor(props) {
     super(props);
@@ -48,7 +50,7 @@ class Helical extends React.Component {
       'inverse_beam',
       'centringMethod',
       'detector_mode',
-      'space_group',
+      'crystalSpaceGroup',
       'prefix',
       'subdir',
       'type',
@@ -147,9 +149,29 @@ class Helical extends React.Component {
                 <CheckboxField propName="inverse_beam" label="Inverse beam" />
               </FieldsRow>
             </CollapsableRows>
-          </Form>
 
+          </Form>
           <FieldsHeader title="Processing" />
+            <CollapsableRows>
+              <Form horizontal>
+                <SelectField col1="3" col2="3"
+                  propName="crystalSpaceGroup"
+                  label="Space group"
+                  list={SPACE_GROUPS}
+                />
+                <b> Unit Cell: </b>
+                <FieldsRow>
+                  <InputField col1="1" col2="5" propName="cellA" label="a" />
+                  <InputField col1="1" col2="5" propName="cellB" label="b" />
+                  <InputField col1="1" col2="5" propName="cellC" label="c" />
+                </FieldsRow>
+                <FieldsRow>
+                  <InputField col1="1" col2="5" propName="cellAlpha" label="&alpha;" />
+                  <InputField col1="1" col2="5" propName="cellBeta" label="&beta;" />
+                  <InputField col1="1" col2="5" propName="cellGamma" label="&gamma;" />
+                </FieldsRow>
+              </Form>
+            </CollapsableRows>
        </Modal.Body>
        { this.props.taskData.state ? '' :
            <Modal.Footer>
