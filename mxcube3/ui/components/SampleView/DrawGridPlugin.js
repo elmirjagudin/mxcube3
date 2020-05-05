@@ -7,12 +7,81 @@ const fabric = window.fabric;
 const GridGroup = fabric.util.createClass(fabric.Group, {
   type: 'GridGroup',
 
-  initialize(objects, options = {}) {
+  initialize(objects, meshGrid, options = {}) {
+    objects.push(meshGrid);
     this.callSuper('initialize', objects, options);
     this.id = options.id;
-  }
+    this.meshGrid = meshGrid;
+  },
+
+  update(cellColors, selected) {
+    this.meshGrid.set({ cellColors, selected });
+  },
 });
 
+const MeshGrid = fabric.util.createClass(fabric.Object, {
+  type: 'meshGrid',
+
+  initialize(options) {
+    options || (options = { });  // eslint-disable-line no-param-reassign
+    this.callSuper('initialize', options);
+
+    this.cacheProperties.push('selected');
+    this.cacheProperties.push('cellColors');
+  },
+
+  _render(ctx) {
+    const left = -(this.width / 2);
+    const top = -(this.height / 2);
+    const right = -left;
+    const bottom = -top;
+    const cellWidth = this.width / this.cellCols;
+    const cellHeight = this.height / this.cellRows;
+    const color = this.selected ? 'rgba(0, 255, 0, 1)' : 'rgba(0, 0, 100, 0.8)';
+    const cellLeftOffset = left + cellWidth / 2;
+    const cellTopOffset = top + cellHeight / 2;
+
+    ctx.strokeStyle = color; // eslint-disable-line no-param-reassign
+
+    /*
+     * draw inner grid lines
+     */
+    for (let row = 1; row < this.cellRows; row += 1) {
+      const y = top + row * cellHeight;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(right, y);
+      ctx.stroke();
+    }
+
+    for (let col = 1; col < this.cellCols; col += 1) {
+      const x = left + col * cellWidth;
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      ctx.lineTo(x, bottom);
+      ctx.stroke();
+    }
+
+     /* draw outer border */
+    if (!this.selected) {
+      ctx.setLineDash([5, 5]);
+    }
+    ctx.strokeRect(left, top, this.width, this.height);
+
+    /* 'value' circles  */
+    for (let row = 0; row < this.cellRows; row += 1) {
+      for (let col = 0; col < this.cellCols; col += 1) {
+        const x = cellLeftOffset + cellWidth * col;
+        const y = cellTopOffset + cellHeight * row;
+
+        ctx.fillStyle = this.cellColors[col][row]; // eslint-disable-line no-param-reassign
+        ctx.beginPath();
+        ctx.arc(x, y, cellWidth / 2, 0, Math.PI * 2, true);
+        ctx.fill();
+      }
+    }
+  }
+});
 
 /**
  * GridData object defines a grid
@@ -41,7 +110,6 @@ export default class DrawGridPlugin {
     this.currentGridData = this.currentGridData.bind(this);
     this.currentShape = this.currentShape.bind(this);
     this.setCellSize = this.setCellSize.bind(this);
-    this.shapeFromGridData = this.shapeFromGridData.bind(this);
     this.reset = this.reset.bind(this);
     this.snapToGrid = true;
     this.heatMapColorForValue = this.heatMapColorForValue.bind(this);
@@ -173,7 +241,7 @@ export default class DrawGridPlugin {
   }
 
   /**
-   * Sart drawing grid
+   * Start drawing grid
    *
    * @param {Object} options
    * @param {FabricCanvas} canvas
@@ -229,7 +297,6 @@ export default class DrawGridPlugin {
       this.repaint(canvas);
     }
   }
-
 
   /**
    * Repaint current grid
@@ -321,90 +388,20 @@ export default class DrawGridPlugin {
     const width = cellTW * gridData.numCols;
 
     const color = gridData.selected ? 'rgba(0, 255, 0, 1)' : 'rgba(0, 0, 100, 0.8)';
-    const strokeArray = gridData.selected ? [] : [5, 5];
     const fillingMatrix = this.cellFillingFromData(gridData, gridData.numCols, gridData.numRows);
 
-
-    if (cellTW > 0 && cellTH > 0) {
-      for (let nw = 1; nw < gridData.numCols; nw++) {
-        shapes.push(new fabric.Line(
-          [left + cellTW * nw, top,
-           left + cellTW * nw, top + height],
-          {
-            stroke: color,
-            hasControls: false,
-            selectable: false
-          }));
-      }
-
-      for (let nh = 1; nh < gridData.numRows; nh++) {
-        shapes.push(new fabric.Line(
-          [left, top + (cellTH) * nh,
-           left + width, top + cellTH * nh],
-          {
-            stroke: color,
-            hasControls: false,
-            selectable: false
-          }));
-      }
-
-      if (!this.drawing) {
-        for (let nw = 0; nw < gridData.numCols; nw++) {
-          for (let nh = 0; nh < gridData.numRows; nh++) {
-            const cellCount = this.countCells(gridData.cellCountFun, nw, nh,
-                                              gridData.numRows, gridData.numCols);
-
-            shapes.push(new fabric.Ellipse({
-              left: left + cellHSpace / 2 + cellTW * nw,
-              top: top + cellVSpace / 2 + cellTH * nh,
-              width: cellWidth,
-              height: cellHeight,
-              fill: fillingMatrix[nw][nh],
-              stroke: 'rgba(0,0,0,0)',
-              hasControls: false,
-              selectable: false,
-              hasRotatingPoint: false,
-              lockMovementX: true,
-              lockMovementY: true,
-              lockScalingX: true,
-              lockScalingY: true,
-              lockRotation: true,
-              hoverCursor: 'pointer',
-              originX: 'left',
-              originY: 'top',
-              rx: cellWidth / 2,
-              ry: cellHeight / 2,
-              cell: cellCount
-            }));
-
-            if (this.include_cell_labels) {
-              shapes.push(new fabric.Text(cellCount, {
-                left: left + cellHSpace / 2 + (cellTW) * nw + cellWidth / 2,
-                top: top + cellVSpace / 2 + (cellTH) * nh + cellHeight / 2,
-                originX: 'center',
-                originY: 'center',
-                fill: 'rgba(0, 0, 200, 1)',
-                fontFamily: 'Helvetica',
-                fontSize: 18
-              }));
-            }
-          }
-        }
-      }
-    }
-
-    shapes.push(new fabric.Rect({
+    const meshGrid = new MeshGrid({
       left,
       top,
       width,
       height,
-      fill: 'rgba(0,0,0,0)',
-      strokeDashArray: strokeArray,
-      stroke: color,
+      cellCols: gridData.numCols,
+      cellRows: gridData.numRows,
+      cellColors: fillingMatrix,
       hasControls: false,
-      selectable: true,
-      hoverCursor: 'pointer'
-    }));
+      selected: gridData.selected,
+      selectable: false
+    });
 
     if (gridData.name) {
       shapes.push(new fabric.Text(gridData.name, {
@@ -416,7 +413,7 @@ export default class DrawGridPlugin {
       }));
     }
 
-    const shapeGroup = new GridGroup(shapes, {
+    const shapeGroup = new GridGroup(shapes, meshGrid, {
       hasBorders: false,
       hasControls: false,
       selectable: true,

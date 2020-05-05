@@ -12,6 +12,58 @@ const fabric = window.fabric;
 fabric.Group.prototype.hasControls = false;
 fabric.Group.prototype.hasBorders = false;
 
+
+class GridsCache {
+  constructor() {
+    this.grids = new Map();
+    this.scale = undefined;
+  }
+
+  setScale(scale) {
+    // keep track if the image scale have changed
+    const updated = (this.scale !== scale);
+    this.scale = scale;
+
+    return updated;
+  }
+
+  getGrid(gridID) {
+    return this.grids.get(gridID);
+  }
+
+  addGrid(gridData, gridGroup) {
+    this.grids.set(gridData.id, { selected: gridData.selected, group: gridGroup });
+  }
+
+  // compare provided props grids list with cached grids and
+  // drop any cached grids that are not listed in the props grids
+  pruneGrids(scale, grids) {
+    const scaleUpdated = this.setScale(scale);
+
+    // figure out what grids where removed
+    const deletedID = new Set(this.grids.keys());
+
+    // if the scale have changed, re-draw all the grids
+    if (!scaleUpdated) {
+      // scale is the same,
+      // let's figure out what grids have been dropped
+      Object.values(grids).forEach((gd) => {
+        deletedID.delete(gd.id);
+      });
+    }
+
+    // remove grids from the cache and
+    // create a list of removed gridGroup objects
+    const deletedGrids = [];
+    for (const gridID of deletedID) {
+      deletedGrids.push(this.getGrid(gridID).group);
+      this.grids.delete(gridID);
+    }
+
+    return deletedGrids;
+  }
+}
+
 export default class SampleImage extends React.Component {
 
   constructor(props) {
@@ -42,6 +94,7 @@ export default class SampleImage extends React.Component {
     this.clearSelectionEvent = this.clearSelectionEvent.bind(this);
     this.toggleGridVisibility = this.toggleGridVisibility.bind(this);
     this.canvas = {};
+    this.gridsCache = new GridsCache();
     this.drawGridPlugin = new DrawGridPlugin();
     this._keyPressed = null;
     this.gridStarted = false;
@@ -64,7 +117,7 @@ export default class SampleImage extends React.Component {
     this.canvas.on('selection:created', this.selectShapeEvent);
     this.canvas.on('selection:cleared', this.clearSelectionEvent);
 
-    // Bind rigth click to function manually with javascript
+    // Bind right click to function manually with javascript
     const imageOverlay = document.getElementById('insideWrapper');
     imageOverlay.addEventListener('contextmenu', this.rightClick, false);
     // Bind mouse scroll up/down to function manually with javascript
@@ -300,8 +353,19 @@ export default class SampleImage extends React.Component {
     canvasWindow.height = h;
     // Set the size of the created FabricJS Canvas
     this.canvas.setDimensions({ width: w, height: h });
-    this.canvas.requestRenderAll();
-    this.canvas.clear();
+
+
+    // Remove all canvas objects, except the 'saved'
+    // mesh grids, which we avoid re-constructing
+    // each time props are changed
+    const objs = this.canvas.getObjects();
+    objs.forEach((obj) => {
+      if (obj.type === 'GridGroup' && obj.id !== null) {
+        return;
+      }
+
+      this.canvas.remove(obj);
+    });
 
     // Set size of the Image from
     document.getElementById('sample-img').style.height = `${h}px`;
@@ -709,19 +773,39 @@ export default class SampleImage extends React.Component {
 
     const fabricSelectables = [...makeLines(lines, imageRatio)];
 
+
+    // remove deleted grid from canvas
+    for (const gridGroup of this.gridsCache.pruneGrids(imageRatio, grids)) {
+      this.canvas.remove(gridGroup);
+    }
+
     // Grids already defined (drawn)
     Object.values(grids).forEach((gd) => {
       let gridData = { ... gd };
 
       if (!this.props.busy || !gridData.state === 'HIDDEN') {
-        this.drawGridPlugin.setScale(imageRatio);
-        gridData = this.drawGridPlugin.setPixelsPerMM(pixelsPerMm, gridData);
-        fabricSelectables.push(this.drawGridPlugin.shapeFromGridData(
-          gridData).shapeGroup);
+        const cachedGrid = this.gridsCache.getGrid(gd.id);
+
+        if (cachedGrid === undefined) {
+          // new grid
+          this.drawGridPlugin.setScale(imageRatio);
+          gridData = this.drawGridPlugin.setPixelsPerMM(pixelsPerMm, gridData);
+          const gridGroup = this.drawGridPlugin.shapeFromGridData(gridData).shapeGroup;
+
+          fabricSelectables.push(gridGroup);
+          this.gridsCache.addGrid(gd, gridGroup);
+
+          return;
+        }
+
+        if (gd.updated) {
+          const cellColors = this.drawGridPlugin.cellFillingFromData(gd, gd.numCols, gd.numRows);
+          cachedGrid.group.update(cellColors, gd.selected);
+        }
       }
     });
 
-    // Grid beeing defined (being drawn)
+    // Grid being defined (being drawn)
     if (this.drawGridPlugin.shapeGroup) {
       fabricSelectables.push(this.drawGridPlugin.shapeGroup);
     }

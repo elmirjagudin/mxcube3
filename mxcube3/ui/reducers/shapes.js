@@ -18,8 +18,20 @@ export default (state = initialState, action) => {
       {
         const shapes = { ...state.shapes };
 
+        //
+        // in order to implement 'cached' drawing of the grids,
+        // we need to keep track of which shapes have been
+        // updated, so we can redraw them
+        //
+
+        // reset all 'updated' flags for current shapes
+        Object.keys(shapes).forEach((shapeID) => {
+          shapes[shapeID].updated = false;
+        });
+
         action.shapes.forEach((shape) => {
-          shapes[shape.id] = shape;
+          // update state's shape and set 'updated' flag
+          shapes[shape.id] = { ...shape, updated: true };
         });
 
         return { ...state, shapes };
