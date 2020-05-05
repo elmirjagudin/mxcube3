@@ -266,7 +266,7 @@ export default class DrawGridPlugin {
 
   initializeCellFilling(gd, col, row) {
     const level = this.overlayLevel ? this.overlayLevel : 0.2;
-    const fill = `rgba(0, 0, 200, ${level}`;
+    const fill = `rgba(0, 0, 200, ${level})`;
     const cellfillingMatrix = Array(col).fill().map(() => Array(row).fill(fill));
     return cellfillingMatrix;
   }
