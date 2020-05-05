@@ -277,13 +277,6 @@ export default class DrawGridPlugin {
     * @param {GridData} gd
     * @param 2d array data
     */
-    const data = Array(col).fill().map(() => Array(row).fill());
-
-    for (let nw = 0; nw < col; nw++) {
-      for (let nh = 0; nh < row; nh++) {
-        data[nw][nh] = Math.random();
-      }
-    }
 
     const fillingMatrix = this.initializeCellFilling(gd, col, row);
 

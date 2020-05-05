@@ -29,7 +29,6 @@ export default class SampleImage extends React.Component {
     this.setVCellSpacing = this.setVCellSpacing.bind(this);
     this.setGridOverlayOpacity = this.setGridOverlayOpacity.bind(this);
     this.getGridOverlayOpacity = this.getGridOverlayOpacity.bind(this);
-    this.saveGrid = this.saveGrid.bind(this);
     this.getGridCellCenter = this.getGridCellCenter.bind(this);
     this.configureGrid = this.configureGrid.bind(this);
     this.updateGridResults = this.updateGridResults.bind(this);
@@ -596,12 +595,6 @@ export default class SampleImage extends React.Component {
     if (gridForm) {
       gridForm.style.display = 'none';
     }
-  }
-
-  saveGrid() {
-    const gd = this.drawGridPlugin.saveGrid(this.drawGridPlugin.currentGridData());
-    this.props.sampleActions.sendAddShape({ t: 'G', ...gd });
-    this.drawGridPlugin.reset();
   }
 
   toggleGridVisibility(id) {
