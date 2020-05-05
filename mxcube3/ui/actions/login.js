@@ -72,6 +72,7 @@ export function sendSelectProposal(number) {
     postProposal(number).then((response) => {
       if (response.status >= 400) {
         dispatch(showErrorPanel(true, 'Server refused to select proposal'));
+        dispatch(setLoading(false));
         browserHistory.push('/login');
       } else {
         browserHistory.push('/');
