@@ -93,7 +93,8 @@ def set_proposal():
     """
     content = request.get_json()
     proposal_number = content['proposal_number']
-    limsutils.select_proposal(proposal_number)
+    if not limsutils.select_proposal(proposal_number):
+        return Response(status=401)
     logging.getLogger('user_log').info('[LIMS] Proposal selected.')
 
     return Response(status=200)
