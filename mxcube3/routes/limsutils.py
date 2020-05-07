@@ -304,7 +304,7 @@ def select_proposal(proposal):
             except:
                 logging.getLogger('HWR').error('[LIMS] Error creating data directories, %s'
                                               % sys.exc_info()[1])
-                return False
+                #return False
 
         # Get all the files in the root data dir for this user
         root_path = mxcube.session.get_base_image_directory()
