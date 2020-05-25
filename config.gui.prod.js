@@ -10,14 +10,14 @@ module.exports = {
 	],
 	beamlineCameras: [{
 		url: "http://172.16.119.17/mjpg/video.mjpg?streamprofile=mxcube",
-		width:"320px",
-		height:"180px",
+		width:"640px",
+		height:"360px",
 		location:"Experimental Hutch"
 		},
 		{
 		url: "http://172.16.119.9/mjpg/video.mjpg?streamprofile=mxcube",
-		width:"320px",
-		height:"180px",
+		width:"640px",
+		height:"360px",
 		location:"Diffractometer"
 	}]
 }

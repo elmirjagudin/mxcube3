@@ -4,15 +4,15 @@
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
-  max-width: 370px;
+  max-width: 670px;
   position: fixed;
   right: 0;
   z-index: 9999;
 }
 
 .camera-popover{
-    max-width:500px;
-    height:250px;
+    max-width:700px;
+    height:420px;
     z-index: 9999;
     margin-right: 100px !important;
 }
