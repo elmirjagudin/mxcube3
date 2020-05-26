@@ -218,8 +218,8 @@ class DataCollection extends React.Component {
             }
             <CollapsableRows>
               <FieldsRow>
-                <InputField propName="kappa" type="number" label="Kappa" />
-                <InputField propName="kappa_phi" type="number" label="Phi" />
+                <InputField disabled="true" propName="kappa" type="number" label="Kappa" />
+                <InputField disabled="true" propName="kappa_phi" type="number" label="Phi" />
               </FieldsRow>
               <FieldsRow>
                 <SelectField
@@ -300,7 +300,13 @@ DataCollection = connect(state => {
         state.beamline.attributes.energy.value),
       osc_start: (state.taskForm.sampleIds.constructor !== Array ?
         state.taskForm.taskData.parameters.osc_start :
-        state.beamline.motors.phi.position)
+        state.beamline.motors.phi.position),
+      kappa: (state.taskForm.sampleIds.constructor !== Array ?
+        state.taskForm.taskData.parameters.kappa :
+        state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa),
+      kappa_phi: (state.taskForm.sampleIds.constructor !== Array ?
+        state.taskForm.taskData.parameters.kappa_phi :
+        state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi)
     }
   };
 })(DataCollection);
