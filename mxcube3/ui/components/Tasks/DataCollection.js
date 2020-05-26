@@ -305,11 +305,7 @@ DataCollection = connect(state => {
         state.beamline.attributes.energy.value),
       osc_start: (state.taskForm.sampleIds.constructor !== Array ?
         state.taskForm.taskData.parameters.osc_start :
-        state.beamline.motors.phi.position),
-      kappa: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa : kappa),
-      kappa_phi: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa_phi : kappaPhi)
+        state.beamline.motors.phi.position)
     }
   };
 })(DataCollection);
