@@ -220,6 +220,11 @@ Helical = connect(state => {
     fname = `${prefix}_[RUN#]_[IMG#]`;
   }
 
+  // should use the kappa and kappPhi in state.shapes.shapes[state.taskForm.pointID].motorPositions
+  // but currently this value is a string, so put 0 instead for now
+  const kappa = 0;
+  const kappaPhi = 0;
+
   return {
     path: `${state.queue.rootPath}/${subdir}`,
     filename: fname,
@@ -235,11 +240,9 @@ Helical = connect(state => {
         state.taskForm.taskData.parameters.osc_start :
         state.beamline.motors.phi.position),
       kappa: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa :
-        state.shapes.shapes[state.taskForm.pointID].motorPositions[0].kappa),
+        state.taskForm.taskData.parameters.kappa : kappa),
       kappa_phi: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa_phi :
-        state.shapes.shapes[state.taskForm.pointID].motorPositions[0].kappa_phi)
+        state.taskForm.taskData.parameters.kappa_phi : kappaPhi)
     }
   };
 })(Helical);

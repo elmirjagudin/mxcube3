@@ -333,6 +333,12 @@ Characterisation = connect(state => {
     fname = `${prefix}_[RUN#]_[IMG#]`;
   }
 
+  const kappa = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa ?
+    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa : 0;
+  const kappaPhi = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi ?
+    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi : 0;
+
+
   return {
     path: `${state.queue.rootPath}/${subdir}`,
     filename: fname,
@@ -355,11 +361,9 @@ Characterisation = connect(state => {
         state.taskForm.taskData.parameters.osc_start :
         state.beamline.motors.phi.position),
       kappa: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa :
-        state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa),
+        state.taskForm.taskData.parameters.kappa : kappa),
       kappa_phi: (state.taskForm.sampleIds.constructor !== Array ?
-        state.taskForm.taskData.parameters.kappa_phi :
-        state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi)
+        state.taskForm.taskData.parameters.kappa_phi : kappaPhi)
     }
   };
 })(Characterisation);
