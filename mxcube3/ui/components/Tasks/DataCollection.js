@@ -218,8 +218,8 @@ class DataCollection extends React.Component {
             }
             <CollapsableRows>
               <FieldsRow>
-                <InputField propName="kappa" type="number" label="Kappa" />
-                <InputField propName="kappa_phi" type="number" label="Phi" />
+                <InputField disabled="true" propName="kappa" type="number" label="Kappa" />
+                <InputField disabled="true" propName="kappa_phi" type="number" label="Phi" />
               </FieldsRow>
               <FieldsRow>
                 <SelectField
@@ -287,6 +287,11 @@ DataCollection = connect(state => {
     fname = `${prefix}_[RUN#]_[IMG#]`;
   }
 
+  const kappa = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa ?
+    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa : 0;
+  const kappaPhi = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi ?
+    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi : 0;
+
   return {
     path: `${state.queue.rootPath}/${subdir}`,
     filename: fname,
@@ -300,7 +305,11 @@ DataCollection = connect(state => {
         state.beamline.attributes.energy.value),
       osc_start: (state.taskForm.sampleIds.constructor !== Array ?
         state.taskForm.taskData.parameters.osc_start :
-        state.beamline.motors.phi.position)
+        state.beamline.motors.phi.position),
+      kappa: (state.taskForm.sampleIds.constructor !== Array ?
+        state.taskForm.taskData.parameters.kappa : kappa),
+      kappa_phi: (state.taskForm.sampleIds.constructor !== Array ?
+        state.taskForm.taskData.parameters.kappa_phi : kappaPhi)
     }
   };
 })(DataCollection);
