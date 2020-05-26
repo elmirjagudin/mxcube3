@@ -333,12 +333,6 @@ Characterisation = connect(state => {
     fname = `${prefix}_[RUN#]_[IMG#]`;
   }
 
-  const kappa = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa ?
-    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappa : 0;
-  const kappaPhi = state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi ?
-    state.shapes.shapes[state.taskForm.pointID].motorPositions.kappaPhi : 0;
-
-
   return {
     path: `${state.queue.rootPath}/${subdir}`,
     filename: fname,
