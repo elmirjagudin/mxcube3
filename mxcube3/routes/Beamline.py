@@ -130,6 +130,18 @@ def beamline_abort_action(name):
         logging.getLogger('user_level_log').error('Aborting set on %s.' % name)
         return make_response("", 200)
 
+@mxcube.route("/mxcube/api/v0.1/beamline/restart_mxcube", methods=['GET'])
+def beamline_restart_mxcube():
+    """
+    Restarting mxcube backend server
+    Replies with status code 200 on success and 520 on exceptions.
+    """
+    response = beamline_run_action("Restart_MXCuBE")
+    if response.status_code == 200:
+        msg = "Restarting MXCuBE now....\nPlease wait for ~15s and try to log in MXCuBE again!"
+        return make_response(msg,200)
+    else:
+        return response
 
 @mxcube.route("/mxcube/api/v0.1/beamline/<name>/run", methods=['POST'])
 def beamline_run_action(name):
