@@ -1226,6 +1226,7 @@ def set_energy_scan_params(model, entry, task_data, sample_model):
     # Set element, and if any, other parameters
     model.element_symbol = params.get("element", "")
     model.edge = params.get("edge", "")
+    model.exposure_time = params.get("expTime", 0.1)
 
     model.set_enabled(task_data['checked'])
     entry.set_enabled(task_data['checked'])
