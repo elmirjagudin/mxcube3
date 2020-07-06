@@ -46,7 +46,8 @@ class EnergyScan extends React.Component {
       'wfpath',
       'suffix',
       'element',
-      'edge'
+      'edge',
+      'expTime'
     ];
 
     this.props.addTask(parameters, stringFields, runNow);
@@ -113,6 +114,17 @@ class EnergyScan extends React.Component {
             <Row>
               <Col xs={12} style={{ marginTop: '10px' }}>
                 <InputField propName="edge" label="Edge" col1="4" col2="2" />
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} style={{ marginTop: '10px' }}>
+                <InputField
+                  propName="expTime"
+                  label="Exposure Time"
+                  col1="4"
+                  col2="2"
+                  type="number"
+                />
               </Col>
             </Row>
           </Form>
