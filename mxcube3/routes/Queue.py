@@ -258,6 +258,8 @@ def queue_update_item(sqid, tqid):
         qutils.set_char_params(model, entry, data, sample_model)
     elif data["type"] == "XRFScan":
         qutils.set_xrf_params(model, entry, data, sample_model)
+    elif data["type"] == "EnergyScan":
+        qutils.set_energy_scan_params(model, entry, data, sample_model)
 
     #logging.getLogger('HWR').info('[QUEUE] is:\n%s ' % qutils.queue_to_json())
 
@@ -613,7 +615,24 @@ def get_default_xrf_parameters():
     resp.status_code = 200
     return resp
 
+@mxcube.route("/mxcube/api/v0.1/queue/energyscan", methods=['GET'])
+@mxcube.restrict
+def get_default_energy_scan_parameters():
+    """
+    returns the default values for an energy scan
+    """
+    exp_time = 0.1
+    try:
+        exp_time =  mxcube.beamline.getObjectByRole('energyscan').\
+                    getProperty('default_exposure_time', 0.1)
+    except Exception as ex:
+        msg = "Failed to get object with role: energy_scan. "
+        msg += "cannot get default values for XRF"
+        logging.getLogger("HWR").error(msg)
 
+    resp = jsonify({"expTime": exp_time})
+    resp.status_code = 200
+    return resp
 
 @mxcube.route("/mxcube/api/v0.1/queue/<id>", methods=['GET'])
 @mxcube.restrict
