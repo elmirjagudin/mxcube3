@@ -165,6 +165,14 @@ export function getInitialState() {
         'Content-type': 'application/json'
       }
     });
+    const energyScanParameters = fetch('mxcube/api/v0.1/queue/energyscan', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json'
+      }
+    });
     const savedShapes = fetch('mxcube/api/v0.1/sampleview/shapes', {
       method: 'GET',
       credentials: 'include',
@@ -217,6 +225,8 @@ export function getInitialState() {
         json => { state.meshParameters = json.acq_parameters; }).catch(notify),
       xrfParameters.then(parse).then(
         json => { state.xrfParameters = json; }).catch(notify),
+      energyScanParameters.then(parse).then(
+        json => { state.energyScanParameters = json; }).catch(notify),
       savedShapes.then(parse).then(json => {state.shapes = json.shapes;}).catch(notify),
       sampleChangerInitialState.then(parse).then(
         json => { state.sampleChangerState = { state: json.state }; return json; }).then(
