@@ -192,6 +192,8 @@ export default class EnergyScanTaskItem extends Component {
                       <b>Element:</b> {parameters.element}
                       <br />
                       <b>Edge:</b> {parameters.edge}
+                      <br />
+                      <b>Exposure Time:</b> {parameters.expTime}
                     </div>
                   </div>
                   {this.getResult(state)}

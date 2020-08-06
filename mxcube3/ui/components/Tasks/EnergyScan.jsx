@@ -46,7 +46,8 @@ class EnergyScan extends React.Component {
       'wfpath',
       'suffix',
       'element',
-      'edge'
+      'edge',
+      'expTime'
     ];
 
     this.props.addTask(parameters, stringFields, runNow);
@@ -115,6 +116,17 @@ class EnergyScan extends React.Component {
                 <InputField propName="edge" label="Edge" col1="4" col2="2" />
               </Col>
             </Row>
+            <Row>
+              <Col xs={12} style={{ marginTop: '10px' }}>
+                <InputField
+                  propName="expTime"
+                  label="Exposure Time (s)"
+                  col1="4"
+                  col2="2"
+                  type="number"
+                />
+              </Col>
+            </Row>
           </Form>
        </Modal.Body>
 
@@ -122,7 +134,6 @@ class EnergyScan extends React.Component {
            <Modal.Footer>
              <ButtonToolbar className="pull-right">
                <Button bsStyle="success"
-                 disabled={this.props.taskData.parameters.shape === -1 || this.props.invalid}
                  onClick={this.submitRunNow}
                >
                  Run Now
@@ -157,11 +168,21 @@ EnergyScan = connect(state => {
     position = `[${vals}]`;
   }
 
+  let fname = '';
+
+  if (state.taskForm.sampleID) {
+    fname = state.taskForm.taskData.parameters.fileName;
+  } else {
+    const prefix = selector(state, 'prefix');
+    fname = `${prefix}_[RUN#]_[IMG#]`;
+  }
+
   return {
     path: `${state.queue.rootPath}/${subdir}`,
-    filename: state.taskForm.taskData.parameters.fileName,
+    filename: fname,
     edge,
     element,
+    expTime: state.taskForm.taskData.parameters.expTime,
     wfname: state.taskForm.taskData.parameters.wfname,
     acqParametersLimits: state.taskForm.acqParametersLimits,
     suffix: fileSuffix,

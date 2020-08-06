@@ -432,9 +432,14 @@ def _handle_energy_scan(sample_node, node):
     enabled, state = get_node_state(queueID)
     parameters = {"element": node.element_symbol,
                   "edge": node.edge,
-                  "shape": -1}
+                  "expTime": node.exposure_time,
+                  "shape": node.shape}
 
     parameters.update(node.path_template.as_dict())
+    # TODO: Better way of handling this
+    # Right now renaming key from base_prefix to prefix
+    # Because frontend expects prefix
+    parameters['prefix'] = parameters.pop('base_prefix')
     parameters['path'] = parameters['directory']
 
     parameters['subdir'] = os.path.join(*parameters["path"].\
@@ -843,7 +848,6 @@ def queue_add_item(item_list):
                 delete_entry_at([[sid, int(ti)]])
 
     res = queue_to_dict()
-
     return res
 
 def _queue_add_item_rec(item_list, sample_node_id=None):
@@ -1226,6 +1230,10 @@ def set_energy_scan_params(model, entry, task_data, sample_model):
     # Set element, and if any, other parameters
     model.element_symbol = params.get("element", "")
     model.edge = params.get("edge", "")
+    model.exposure_time = float(params.get("expTime", 0.1))
+
+    # MXCuBE3 specific shape attribute
+    model.shape = params["shape"]
 
     model.set_enabled(task_data['checked'])
     entry.set_enabled(task_data['checked'])

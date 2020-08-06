@@ -143,6 +143,9 @@ export default (state = initialState, action) => {
             xrfscan: {
               ...action.data.xrfParameters,
               ...state.defaultParameters.xrfParameters },
+            energyscan: {
+              ...action.data.energyScanParameters,
+              ...state.defaultParameters.energyScanParameters },
             workflow: {
               ...action.data.dcParameters,
               ...state.defaultParameters.workflow },
@@ -165,6 +168,9 @@ export default (state = initialState, action) => {
             xrfscan: {
               ...action.data.xrfParameters,
               ...state.defaultParameters.xrfParameters },
+            energyscan: {
+              ...action.data.energyScanParameters,
+              ...state.defaultParameters.energyScanParameters },
             workflow: {
               ...action.data.dcParameters,
               ...state.defaultParameters.workflow },

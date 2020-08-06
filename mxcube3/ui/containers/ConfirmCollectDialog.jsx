@@ -193,12 +193,14 @@ export class ConfirmCollectDialog extends React.Component {
               <tr>
                 <th>Element</th>
                 <th>Edge</th>
+                <th>Exposure Time</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{task.parameters.element}</td>
                 <td>{task.parameters.edge}</td>
+                <td>{task.parameters.expTime}</td>
               </tr>
             </tbody>
           </Table>
