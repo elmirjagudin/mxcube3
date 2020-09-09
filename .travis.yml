@@ -9,6 +9,8 @@ services:
   - redis-server
 
 install:
+  - node --version
+  - npm --version
   - npm install
   - npm run build
   - pip install codecov
