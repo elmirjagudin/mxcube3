@@ -13,6 +13,7 @@ services:
   - redis-server
 
 install:
+  - nvm install 12
   - nvm use 12
   - node --version
   - npm --version
