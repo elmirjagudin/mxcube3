@@ -14,6 +14,18 @@ from mxcube3.core import beamlineutils
 from mxcube3.core import sviewutils
 
 
+@server.route("/move_shapes/<int:xdelta>/<int:ydelta>", methods=["GET"])
+def move_shapes(xdelta, ydelta):
+    print(f"move_shapes with delta {xdelta} {ydelta}")
+
+    from . import signals
+    signals.move_shapes(xdelta, ydelta)
+
+    resp = jsonify({})
+    resp.status_code = 200
+    return resp
+
+
 @server.route("/mxcube/api/v0.1/sampleview/camera/subscribe", methods=["GET"])
 @server.restrict
 def subscribe_to_camera():

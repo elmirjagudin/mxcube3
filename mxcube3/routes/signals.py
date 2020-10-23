@@ -588,6 +588,23 @@ def send_shapes(update_positions=False, movable={}):
     socketio.emit("update_shapes", {"shapes": shape_dict}, namespace="/hwr")
 
 
+def move_shapes(xdelta, ydelta):
+    shape_dict = {}
+    for shape in blcontrol.beamline.sample_view.get_shapes():
+        x, y = shape.screen_coord
+        x += xdelta
+        y += ydelta
+        shape.screen_coord = [x, y]
+
+        s = to_camel(shape.as_dict())
+        shape_dict.update({shape.id: s})
+
+        from pprint import pprint
+        pprint(shape_dict)
+
+    socketio.emit("update_shapes", {"shapes": shape_dict}, namespace="/hwr")
+
+
 def motor_position_callback(movable):
     socketio.emit("motor_position", movable, namespace="/hwr")
 
